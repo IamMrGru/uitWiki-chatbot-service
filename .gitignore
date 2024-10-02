@@ -1,1 +1,4 @@
 .env
+project_modules/ChainProcess/__pycache__/
+project_modules/EmbeddingsModel/__pycache__/
+project_modules/LlmModel/__pycache__/
