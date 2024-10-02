@@ -2,15 +2,31 @@
 
 ## Triển khai mô hình
 
+### Khởi tạo môi trường ảo
+
+```bash
+python3 -m venv venv
+```
+
+### Kích hoạt môi trường ảo
+
+```bash
+source venv/bin/activate
+```
+
 ### Chạy requirements.txt
 
-_pip install -r requirements.txt_
+```bash
+pip install -r requirements.txt_
+```
 
 ### Thêm file .env với Google API key được cung cấp
 
 ### Chạy lệnh để deploy local
 
-_streamlit run RAG.py_
+```bash
+streamlit run RAG.py_
+```
 
 ### Có thể thực hiện trả lời câu hỏi vì đã có sẵn dữ liệu trong folder faiss_index
 
