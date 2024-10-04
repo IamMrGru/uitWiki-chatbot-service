@@ -40,12 +40,9 @@ def get_conversational_chain():
     - Bạn có thể cung cấp nội dung này được trích dẫn trong tài liệu nào.(Chỉ trích dẫn điều nào, tên tài liệu nào chứ không cần chỉ rõ trang)
     """
 
-    # Chọn model để tạo chain
-    # model=ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0) # Có thể lựa chọn model LLM khác
     model = GoogleGenerativeAI(model="gemini-1.5-flash", temperature=0,
                                api_key=api_key)
-    # model=HuggingFaceEndpoint(repo_id="NlpHUST/gpt2-vietnamese",huggingfacehub_api_token='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',max_new_tokens=200)
-    # model=AnthropicLLM(model="claude-2.1",api_key=os.getenv('ANTHROPIC_API_KEY'),temperature=0)
+
     prompt = PromptTemplate(template=prompt_template, input_variables=[
                             "context", "question", 'metadata'])
     chain = load_qa_chain(model, chain_type="stuff",
