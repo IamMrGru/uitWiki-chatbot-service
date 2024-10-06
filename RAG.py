@@ -1,7 +1,7 @@
 import streamlit as st
-from project_module.ChainProcess import pdf_process
-from project_module.EmbeddingsModel import Embeddingsmodel
-from project_module.LlmModel import llmModel
+from project_modules.ChainProcess import pdf_process
+from project_modules.EmbeddingsModel import Embeddingsmodel
+from project_modules.LlmModel import llmModel
 
 # Hàm main để chạy ứng dụng Streamlit
 def main():

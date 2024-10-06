@@ -12,7 +12,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains.query_constructor.base import AttributeInfo
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 
-from project_module.EmbeddingsModel import Embeddingsmodel
+from project_modules.EmbeddingsModel import Embeddingsmodel
 import streamlit as st
 from dotenv import load_dotenv
 import os
