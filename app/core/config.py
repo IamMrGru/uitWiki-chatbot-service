@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     WIKI_API_KEY: str
     MONGO_URI: str
     MONGO_DB_NAME: str = "uit-wiki"
+    REDIS_HOST: str
 
 
 settings = Settings()  # type: ignore

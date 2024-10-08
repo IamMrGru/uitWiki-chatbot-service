@@ -45,6 +45,5 @@ def get_conversational_chain():
 
     prompt = PromptTemplate(template=prompt_template, input_variables=[
                             "context", "question", 'metadata'])
-    chain = load_qa_chain(model, chain_type="stuff",
-                          prompt=prompt, verbose=True)
+    chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
     return chain

@@ -4,6 +4,7 @@ from app.api import main as api
 from app.core.config import settings
 from app.core.database import MongoDBConnection
 from contextlib import asynccontextmanager
+import gc
 
 
 mongodb = MongoDBConnection()
@@ -11,9 +12,12 @@ mongodb = MongoDBConnection()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await mongodb.connect()
-    yield
-    await mongodb.close()
+    try:
+        await mongodb.connect()
+        yield
+    finally:
+        await mongodb.close()
+        gc.collect()
 
 
 async def get_db():
