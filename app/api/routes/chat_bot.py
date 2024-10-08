@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.services.RAG import RAGServices
+from app.core.auth import verify_api_key
 
 router = APIRouter()
 
@@ -9,7 +10,7 @@ class QuestionRequest(BaseModel):
     user_question: str
 
 
-@router.post("/send_message")
+@router.post("/send_message", response_model=dict)
 async def read_root(body: QuestionRequest):
     try:
         user_question = body.user_question

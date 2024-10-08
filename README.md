@@ -13,18 +13,7 @@ $ uv run pre-commit install
 
 Create .env file and fill in the necessary information
 ```console
-# Linux/macOS
-echo "GOOGLE_API_KEY=your_google_api_key_here" > .env
-```
-
-```console
-# Windows (Command Prompt)
-echo GOOGLE_API_KEY=your_google_api_key_here > .env
-```
-
-```console
-# Windows (PowerShell)
-echo "GOOGLE_API_KEY=your_google_api_key_here" > .env
+$ touch .env
 ```
 
 Run the project
