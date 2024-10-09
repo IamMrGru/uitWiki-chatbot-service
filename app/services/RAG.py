@@ -1,18 +1,16 @@
 from app.core import llm_model
 import os
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
 from langchain_pinecone.vectorstores import PineconeVectorStore
-from pydantic import SecretStr
 from app.core.config import settings
-from dotenv import load_dotenv
 
 faiss_index_path = os.path.join(
     os.path.dirname(__file__), '../static/faiss_index/')
 
-load_dotenv()
+
 api_key = settings.PINECONE_API_KEY
-index_name= settings.PINECONE_INDEX_NAME
+index_name = settings.PINECONE_INDEX_NAME
+
 
 class RAGServices:
     def __init__(self, data):
@@ -24,15 +22,15 @@ class RAGServices:
             model_name="dangvantuan/vietnamese-embedding")
 
         # new_db = FAISS.load_local(
-        #     faiss_index_path, embeddings, allow_dangerous_deserialization=True)
-        new_db= PineconeVectorStore(
-            index_name=index_name,embedding=embeddings)
+        # faiss_index_path, embeddings, allow_dangerous_deserialization=True)
+        new_db = PineconeVectorStore(
+            index_name=index_name, embedding=embeddings)
 
         docs1 = new_db.similarity_search(user_question, k=10)
 
         docs2 = llm_model.filter_by_metadata(user_question, new_db)
 
-        docs=docs1+docs2
+        docs = docs1 + docs2
 
         metadata_combined = "\n".join([str(doc.metadata) for doc in docs])
 

@@ -21,6 +21,11 @@ Run the project with docker
 $ docker compose up
 ```
 Run the project with uvicorn
+1. Start the redis server
+```console
+$ docker run -d -p 6379:6379 redis
+```
+2. Run the project
 ```console
 $ uv run fastapi dev
 ```

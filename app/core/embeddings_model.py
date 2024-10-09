@@ -12,8 +12,8 @@ faiss_index_path = os.path.join(
 
 # genai.configure(api_key='AIzaSyDy0KU0k_EsB-NdGhFqPtbgZ-delrVgsUg')
 
-# api_key = SecretStr(settings.PINECONE_API_KEY)
-# index_name= SecretStr(settings.PINECONE_INDEX_NAME)
+api_key = settings.PINECONE_API_KEY
+index_name = settings.PINECONE_INDEX_NAME
 
 
 def get_vector_store_with_metadata(chunks_with_metadata):
@@ -27,4 +27,5 @@ def get_vector_store_with_metadata(chunks_with_metadata):
     # vector_store = FAISS.from_texts(
     #     texts, embedding=embeddings, metadatas=metadatas)
     # vector_store.save_local(faiss_index_path)
-    vectorstore= PineconeVectorStore.from_texts(texts, embedding=embeddings, metadatas=metadatas,index_name=index_name)
+    vectorstore = PineconeVectorStore.from_texts(
+        texts, embedding=embeddings, metadatas=metadatas, index_name=index_name)

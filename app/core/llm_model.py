@@ -7,62 +7,65 @@ from langchain_google_genai import GoogleGenerativeAI
 
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
-from langchain.chains.query_constructor.base import AttributeInfo
+from langchain.chains.query_constructor.schema import AttributeInfo
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from app.core.config import settings
 from pydantic import SecretStr
 
 api_key = SecretStr(settings.GOOGLE_API_KEY)
 
-def filter_by_metadata(question,new_db):
+
+def filter_by_metadata(question, new_db):
     metadata_field_info = [
         AttributeInfo(
             name="title",
-            description="Tên của tài liệu chứa thông tin cần truy xuất", 
+            description="Tên của tài liệu chứa thông tin cần truy xuất",
             type="string",
         ),
         AttributeInfo(
             name="author",
-            description= "Phòng ban quản lý tài liệu", 
+            description="Phòng ban quản lý tài liệu",
             type="string",
         ),
         AttributeInfo(
             name="description",
-            description= "Mô tả nội dung của tài liệu", 
+            description="Mô tả nội dung của tài liệu",
             type="string",
         ),
         AttributeInfo(
             name="category",
-            description= "Quy định, chính sách, quy trình, hướng dẫn", 
+            description="Quy định, chính sách, quy trình, hướng dẫn",
             type="string",
         ),
         AttributeInfo(
-            name="tags", 
-            description="Các từ khóa liên quan đến đoạn văn cần truy xuất", 
+            name="tags",
+            description="Các từ khóa liên quan đến đoạn văn cần truy xuất",
             type="string"
         ),
         AttributeInfo(
-            name="target audience", 
-            description="Đối tượng cần sử dụng", 
+            name="target audience",
+            description="Đối tượng cần sử dụng",
             type="string"
         ),
-        ]   
+    ]
     document_content_description = "Tóm tắt nội dung của tài liệu trên "
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash",temperature=0,api_key=api_key)
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash", temperature=0, api_key=api_key)
     retriever = SelfQueryRetriever.from_llm(
-    llm,
-    new_db,
-    document_content_description,
-    metadata_field_info,
-    verbose=True,
+        llm,
+        new_db,
+        document_content_description,
+        metadata_field_info,
+        verbose=True,
     )
-    docs=retriever.invoke(question)
+    docs = retriever.invoke(question)
     return docs
+
 
 def get_conversational_chain():
 
-    prompt_template="""
-    Tên của bạn là UITWikiBot. 
+    prompt_template = """
+    Tên của bạn là UITWikiBot.
     Được phát triển bởi nhóm sinh viên UIT: Hiển Đoàn và Hải Đào dưới sự hướng dẫn của thầy Tín.
     Vai trò của bạn là:
     - Bạn là một trợ lý ảo giải đáp của sinh viên tại trường Đại học Công nghệ Thông tin UIT.
@@ -89,7 +92,7 @@ def get_conversational_chain():
     - Đưa ra một câu trả lời tự nhiên và dễ hiểu nhất có thể.
     - Không tự trả lời mà không có trong METADATA,CONTEXT. Nếu không có hãy trả lời (Vui lòng cung cấp thêm thông tin chi tiết)
     - Bạn có thể trích dẫn tên tài liệu chứa thông tin hoặc nội dung đó nằm ở phần nào của tài liệu đó.
-    - Với những dạng YES/NO, hãy trả lời rõ ràng và chi tiết nhất có thể, phải giải thích vì sao trả lời như vậy dựa trên trích dẫn thông tin đó lấy từ tài liệu nào 
+    - Với những dạng YES/NO, hãy trả lời rõ ràng và chi tiết nhất có thể, phải giải thích vì sao trả lời như vậy dựa trên trích dẫn thông tin đó lấy từ tài liệu nào
     - Những câu trả lời có đường dẫn đến link URL hay đường dẫn để download, bạn hãy embed link đó vào câu trả lời của mình .
     - Hãy embed đường dẫn tải các mẫu đơn vào tên mẫu đơn đó.
        * Ví dụ như : [Đường dẫn tải mẫu đơn](https://www.uit.edu.vn)
@@ -100,5 +103,6 @@ def get_conversational_chain():
 
     prompt = PromptTemplate(template=prompt_template, input_variables=[
                             "context", "question", 'metadata'])
-    chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
+    chain = load_qa_chain(model, chain_type="stuff",
+                          prompt=prompt, verbose=True)
     return chain

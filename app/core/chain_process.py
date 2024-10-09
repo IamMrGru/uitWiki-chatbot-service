@@ -14,12 +14,30 @@ def get_pdf_text_with_metadata(pdf_docs):
 
         # Trích xuất metadata
         pdf_metadata = {
-            "title": get_metadata_value(pdf_reader.metadata, '/Title', 'No Title'),
-            "author": get_metadata_value(pdf_reader.metadata, '/Author', 'No Author'),
-            "description": get_metadata_value(pdf_reader.metadata, '/Description', 'No Description'),
-            "category": get_metadata_value(pdf_reader.metadata, '/Category', 'No Category'),
-            "tags": get_metadata_value(pdf_reader.metadata, '/Tags', 'No Tags'),
-            "target": get_metadata_value(pdf_reader.metadata, '/Target Audience', 'No Target Audience'),
+            "title": get_metadata_value(
+                pdf_reader.metadata,
+                '/Title',
+                'No Title'),
+            "author": get_metadata_value(
+                pdf_reader.metadata,
+                '/Author',
+                'No Author'),
+            "description": get_metadata_value(
+                pdf_reader.metadata,
+                '/Description',
+                'No Description'),
+            "category": get_metadata_value(
+                pdf_reader.metadata,
+                '/Category',
+                'No Category'),
+            "tags": get_metadata_value(
+                pdf_reader.metadata,
+                '/Tags',
+                'No Tags'),
+            "target": get_metadata_value(
+                pdf_reader.metadata,
+                '/Target Audience',
+                'No Target Audience'),
         }
 
         # Trích xuất nội dung và gắn metadata
