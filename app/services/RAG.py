@@ -24,7 +24,7 @@ class RAGServices:
         # new_db = FAISS.load_local(
         # faiss_index_path, embeddings, allow_dangerous_deserialization=True)
         new_db = PineconeVectorStore(
-            index_name=index_name, embedding=embeddings)
+            index_name=index_name, embedding=embeddings, pinecone_api_key=api_key)
 
         docs1 = new_db.similarity_search(user_question, k=10)
 
