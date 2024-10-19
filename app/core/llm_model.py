@@ -64,7 +64,8 @@ def filter_by_metadata(question, new_db):
         ),
     ]
     document_content_description = "Tóm tắt nội dung của tài liệu này để phục vụ cho việc tư vấn sinh viên "
-    llm = GoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
+    llm = GoogleGenerativeAI(model="gemini-1.5-flash",
+                             temperature=0, api_key=api_key)
 
     retriever = SelfQueryRetriever.from_llm(
         llm,
@@ -75,13 +76,6 @@ def filter_by_metadata(question, new_db):
         search_kwargs={'k': 50},
         search_type='similarity',
     )
-    # structured_query = StructuredQuery(
-    # query=question,
-    # limit=5, # Set the number of documents to retrieve
-    # filter=metatadata
-    # )
-
-    # docs = retriever.get_relevant_documents(structured_query)
     docs = retriever.invoke(question)
     return docs
 
