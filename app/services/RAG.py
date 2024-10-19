@@ -1,6 +1,7 @@
 from app.core import llm_model
 import os
-from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+# from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
 from app.core.config import settings
 
@@ -9,7 +10,8 @@ faiss_index_path = os.path.join(
 
 
 api_key = settings.PINECONE_API_KEY
-index_name = settings.PINECONE_INDEX_NAME
+# index_name = settings.PINECONE_INDEX_NAME ?? index_name không nhận giá trị là 'markdown'
+namespace = settings.PINECONE_NAMESPACE
 
 
 class RAGServices:
@@ -18,15 +20,17 @@ class RAGServices:
 
     def get_rag(self, user_question):
 
-        embeddings = HuggingFaceEmbeddings(
-            model_name="dangvantuan/vietnamese-embedding")
+        # embeddings = HuggingFaceEmbeddings(
+        #     model_name="dangvantuan/vietnamese-embedding")
+        embeddings = GoogleGenerativeAIEmbeddings(
+            model="models/text-embedding-004")
 
         # new_db = FAISS.load_local(
         # faiss_index_path, embeddings, allow_dangerous_deserialization=True)
         new_db = PineconeVectorStore(
-            index_name=index_name, embedding=embeddings, pinecone_api_key=api_key)
+            index_name='markdown', embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
 
-        docs1 = new_db.similarity_search(user_question, k=10)
+        docs1 = new_db.similarity_search(query=user_question, k=100)
 
         docs2 = llm_model.filter_by_metadata(user_question, new_db)
 

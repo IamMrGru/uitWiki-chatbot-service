@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     REDIS_HOST: str
     PINECONE_API_KEY: str
     PINECONE_INDEX_NAME: str
+    PINECONE_NAMESPACE: str
 
 
 settings = Settings()  # type: ignore
