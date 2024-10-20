@@ -12,6 +12,7 @@ faiss_index_path = os.path.join(
 api_key = settings.PINECONE_API_KEY
 index_name = settings.PINECONE_INDEX_NAME
 namespace = settings.PINECONE_NAMESPACE
+google_api_key = settings.GOOGLE_API_KEY
 
 
 class RAGServices:
@@ -23,7 +24,7 @@ class RAGServices:
         # embeddings = HuggingFaceEmbeddings(
         #     model_name="dangvantuan/vietnamese-embedding")
         embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/text-embedding-004")
+            model="models/text-embedding-004", api_key=google_api_key)
 
         # new_db = FAISS.load_local(
         # faiss_index_path, embeddings, allow_dangerous_deserialization=True)
