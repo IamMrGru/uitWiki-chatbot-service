@@ -10,7 +10,7 @@ faiss_index_path = os.path.join(
 
 
 api_key = settings.PINECONE_API_KEY
-# index_name = settings.PINECONE_INDEX_NAME ?? index_name không nhận giá trị là 'markdown'
+index_name = settings.PINECONE_INDEX_NAME
 namespace = settings.PINECONE_NAMESPACE
 
 
@@ -28,7 +28,7 @@ class RAGServices:
         # new_db = FAISS.load_local(
         # faiss_index_path, embeddings, allow_dangerous_deserialization=True)
         new_db = PineconeVectorStore(
-            index_name='markdown', embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
+            index_name=index_name, embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
 
         docs1 = new_db.similarity_search(query=user_question, k=100)
 
