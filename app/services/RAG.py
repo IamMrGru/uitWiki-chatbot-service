@@ -4,6 +4,7 @@ import os
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
 from app.core.config import settings
+from pydantic import SecretStr
 
 faiss_index_path = os.path.join(
     os.path.dirname(__file__), '../static/faiss_index/')
@@ -21,13 +22,9 @@ class RAGServices:
 
     def get_rag(self, user_question):
 
-        # embeddings = HuggingFaceEmbeddings(
-        #     model_name="dangvantuan/vietnamese-embedding")
         embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/text-embedding-004", api_key=google_api_key)
+            model="models/text-embedding-004", google_api_key=SecretStr(google_api_key))
 
-        # new_db = FAISS.load_local(
-        # faiss_index_path, embeddings, allow_dangerous_deserialization=True)
         new_db = PineconeVectorStore(
             index_name=index_name, embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
 

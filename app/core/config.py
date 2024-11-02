@@ -10,7 +10,9 @@ class Settings(BaseSettings):
     WIKI_API_KEY: str
     MONGO_URI: str
     MONGO_DB_NAME: str = "uit-wiki"
-    REDIS_HOST: str
+    REDIS_ENDPOINT: str
+    REDIS_PORT: int
+    REDIS_PASSWORD: str
     PINECONE_API_KEY: str
     PINECONE_INDEX_NAME: str
     PINECONE_NAMESPACE: str

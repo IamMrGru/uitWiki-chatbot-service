@@ -11,7 +11,8 @@ class QuestionRequest(BaseModel):
     user_question: str
 
 
-redis = Redis(host=settings.REDIS_HOST, port=6379)
+redis = Redis(host=settings.REDIS_ENDPOINT, port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD,
+              decode_responses=True)
 
 
 @router.post("/send_message", response_model=dict)

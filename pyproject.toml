@@ -15,6 +15,7 @@ dependencies = [
     "langchain-pinecone>=0.2.0",
     "langchain>=0.3.1",
     "lark>=1.2.2",
+    "marker-pdf>=0.3.10",
     "motor==3.6.0",
     "pandas>=2.2.3",
     "pre-commit>=3.8.0",
