@@ -11,18 +11,19 @@ class MarkerRequest(BaseModel):
     file_path: str
 
 
-fpath = '/Users/daogiahai/Documents/Dev/uitWiki-chatbot/app/static/pdf/ctđt_tmđt_2021.pdf'
+fpath = '/Users/lap15737-local/Documents/Dev/kltn/uitWiki-chatbot-service/app/static/pdf/ctđt_tmđt_2021.pdf'
+fpath1 = '/Users/lap15737-local/Documents/Dev/kltn/uitWiki-chatbot-service/app/static/pdf/QuydinhKLTN_metadata.pdf'
 
 
 @router.post("/mark-it", response_model=dict)
 async def mark_it(body: MarkerRequest):
     try:
         model = load_all_models()
-        full_text, images, out_meta = convert_single_pdf(fpath, model)
+        full_text, images, out_meta = convert_single_pdf(fpath1, model)
 
         return {
             "response": {
-                "full_text": full_text,
+                "full_text": full_text.replace("\n", "<br>"),
                 "images": images,
                 "out_meta": out_meta
             }
