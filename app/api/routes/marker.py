@@ -1,8 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from app.core.config import settings
 from pydantic import BaseModel
-from marker.convert import convert_single_pdf
-from marker.models import load_all_models
 
 router = APIRouter()
 
@@ -18,15 +16,11 @@ fpath1 = '/Users/lap15737-local/Documents/Dev/kltn/uitWiki-chatbot-service/app/s
 @router.post("/mark-it", response_model=dict)
 async def mark_it(body: MarkerRequest):
     try:
-        model = load_all_models()
-        full_text, images, out_meta = convert_single_pdf(fpath1, model)
+        # model = load_all_models()
+        # full_text, images, out_meta = convert_single_pdf(fpath1, model)
 
         return {
-            "response": {
-                "full_text": full_text.replace("\n", "<br>"),
-                "images": images,
-                "out_meta": out_meta
-            }
+            "response": 'ok'
         }
     except Exception as e:
         raise HTTPException(

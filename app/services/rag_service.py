@@ -1,14 +1,8 @@
 from app.core import llm_model
-import os
-# from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
 from app.core.config import settings
 from pydantic import SecretStr
-
-faiss_index_path = os.path.join(
-    os.path.dirname(__file__), '../static/faiss_index/')
-
 
 api_key = settings.PINECONE_API_KEY
 index_name = settings.PINECONE_INDEX_NAME

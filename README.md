@@ -18,6 +18,8 @@ This project is ideal for:
 
 ## How to run the project
 
+Install uv ad https://docs.astral.sh/uv/getting-started/installation/
+
 Install the dependencies
 
 ```console
