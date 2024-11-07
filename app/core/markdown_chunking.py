@@ -23,11 +23,6 @@ def markdown_chunking(file_path: str):
     chunks = splitter.split_text(markdown_text)
 
     for chunk in chunks:
-        chunk.metadata = {
-            'author': 'Phòng đào tạo',
-            'title': 'Chương trình đào tạo ngành Thương mại điện tử 2021',
-            'description': 'Chương trình đào tạo ngành Thương mại điện tử 2021',
-            'url': 'https://student.uit.edu.vn/content/cu-nhan-nganh-thuong-mai-dien-tu-ap-dung-tu-khoa-15-2020'
-        }
+        print(chunk.metadata)
 
     return chunks

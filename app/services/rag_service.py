@@ -6,7 +6,7 @@ from pydantic import SecretStr
 
 api_key = settings.PINECONE_API_KEY
 index_name = settings.PINECONE_INDEX_NAME
-namespace = settings.PINECONE_NAMESPACE
+# namespace = settings.PINECONE_NAMESPACE
 google_api_key = settings.GOOGLE_API_KEY
 
 
@@ -20,9 +20,9 @@ class RAGServices:
             model="models/text-embedding-004", google_api_key=SecretStr(google_api_key))
 
         new_db = PineconeVectorStore(
-            index_name=index_name, embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
+            index_name=index_name, embedding=embeddings, pinecone_api_key=api_key)
 
-        docs1 = new_db.similarity_search(query=user_question, k=100)
+        docs1 = new_db.similarity_search(query=user_question, k=15)
 
         docs2 = llm_model.filter_by_metadata(user_question, new_db)
 
