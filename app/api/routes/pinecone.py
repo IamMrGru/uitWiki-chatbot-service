@@ -14,28 +14,28 @@ class Metadata(BaseModel):
 
 
 class UpsertRequest(BaseModel):
-    s3_key: str
+    s3_pdf_key: str
     metadata: list[Metadata]
 
 
 @router.post("/upsert", response_model=dict)
 async def upsert(body: UpsertRequest):
-    s3_key = body.s3_key
+    s3_pdf_key = body.s3_pdf_key
     metadata = body.metadata
 
     try:
-        md_path = await process_pdf(s3_key)
+        # md_key = await process_pdf(s3_key)
 
-        if not isinstance(md_path, str):
-            raise ValueError(
-                "Expected a file path as a string for md_path, got a different type.")
+        # if not isinstance(md_key, str):
+        #     raise ValueError(
+        #         "Expected a file path as a string for md_path, got a different type.")
 
-        chunks = markdown_chunking(md_path)
+        chunks = markdown_chunking('markdown/quytrinhsinhvien.md', metadata)
 
         await pinecone_service.upsert_chunks(chunks)
 
         return {
-            "response": md_path
+            "response": chunks,
         }
 
     except Exception as e:

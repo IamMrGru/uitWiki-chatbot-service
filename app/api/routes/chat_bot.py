@@ -1,5 +1,5 @@
 from redis import Redis
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from app.services.rag_service import RAGServices
 from app.core.config import settings
