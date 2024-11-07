@@ -26,13 +26,13 @@ async def upsert(body: UpsertRequest):
     metadata = body.metadata
 
     try:
-        # md_key = await process_pdf(s3_key)
+        md_key = await process_pdf(s3_pdf_key)
 
-        # if not isinstance(md_key, str):
-        #     raise ValueError(
-        #         "Expected a file path as a string for md_path, got a different type.")
+        if not isinstance(md_key, str):
+            raise ValueError(
+                "Expected a file path as a string for md_path, got a different type.")
 
-        chunks = markdown_chunking('markdown/quytrinhsinhvien.md', metadata)
+        chunks = markdown_chunking(md_key, metadata)
 
         updated_chunks = []
         for chunk in chunks:
@@ -48,7 +48,7 @@ async def upsert(body: UpsertRequest):
         await pinecone_service.upsert_chunks(updated_chunks)
 
         return {
-            "response": updated_chunks,
+            "response": 'Upsert successfully',
         }
 
     except Exception as e:

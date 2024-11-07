@@ -9,11 +9,8 @@ from app.services.s3_service import S3Services
 def download_and_read_md(s3_key: str) -> str:
     s3_client = S3Services()
 
-    # Mac OS
-    local_md_path = os.path.join("/tmp", os.path.basename(s3_key))
-
-    # Windows
-    # local_md_path = os.path.join(tempfile.gettempdir(), os.path.basename(s3_key))
+    local_md_path = os.path.join(
+        tempfile.gettempdir(), os.path.basename(s3_key))
 
     s3_client.download_file(s3_key, local_md_path)
 
@@ -51,7 +48,7 @@ def preprocess_ordered_list_to_header(content, header_prefix="List Section"):
         if ordered_list_pattern.match(line):
             # If it's the first item in a list, add a header before it
             if i == 0 or not ordered_list_pattern.match(lines[i-1]):
-                header = f"### {header_prefix} {section_count}"
+                header = f"### {section_count}"
                 new_content.append(header)
                 section_count += 1  # Increment section counter
 
@@ -62,9 +59,50 @@ def preprocess_ordered_list_to_header(content, header_prefix="List Section"):
     return "\n".join(new_content)
 
 
+def preprocess_tables_to_header(content, header_prefix="Table Section"):
+    """
+    Preprocess Markdown content by adding headers before each table.
+
+    Parameters:
+    - content: str - The original Markdown content.
+    - header_prefix: str - The prefix text for each header to replace the table.
+
+    Returns:
+    - str - The modified Markdown content with headers added before each table.
+    """
+    # Regular expression to find the start of a Markdown table (| headers or |---| separator)
+    table_pattern = re.compile(r"^\s*\|.*\|\s*$")
+    separator_pattern = re.compile(r"^\s*\|[ -]+\|\s*$")
+
+    # Split the content by lines
+    lines = content.splitlines()
+    new_content = []
+    table_count = 1  # To number each table section
+    in_table = False  # Track if we're inside a table
+
+    for i, line in enumerate(lines):
+        # Detect table start (headers) or separator line
+        if table_pattern.match(line) or separator_pattern.match(line):
+            if not in_table:
+                # Add a new header at the start of a table
+                header = f"### {header_prefix} {table_count}"
+                new_content.append(header)
+                table_count += 1
+                in_table = True  # Now inside a table
+        else:
+            in_table = False  # Reset when table ends
+
+        # Add the original line
+        new_content.append(line)
+
+    # Join the list back into a single string
+    return "\n".join(new_content)
+
+
 def markdown_chunking(s3_key: str, metadata) -> list[Document]:
     markdown_text = download_and_read_md(s3_key)
-    processed_content = preprocess_ordered_list_to_header(markdown_text)
+    processed_order_list = preprocess_ordered_list_to_header(markdown_text)
+    processed_content = preprocess_tables_to_header(processed_order_list)
 
     header_to_split_on = [
         ("#", "Header 1"),
