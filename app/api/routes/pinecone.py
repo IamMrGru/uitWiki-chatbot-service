@@ -3,6 +3,8 @@ from app.core.markdown_chunking import markdown_chunking
 from app.core.process_pdf import process_pdf
 from app.services.pinecone_service import PineconeService
 from pydantic import BaseModel
+from copy import deepcopy
+from langchain_core.documents import Document
 
 router = APIRouter()
 pinecone_service = PineconeService()
@@ -32,10 +34,21 @@ async def upsert(body: UpsertRequest):
 
         chunks = markdown_chunking('markdown/quytrinhsinhvien.md', metadata)
 
-        await pinecone_service.upsert_chunks(chunks)
+        updated_chunks = []
+        for chunk in chunks:
+            # Tạo một bản sao mới của metadata cho mỗi document
+            new_metadata = deepcopy(chunk.metadata)
+            # Gán page_content vào metadata['text']
+            new_metadata['text'] = chunk.page_content
+            # Tạo một document mới với metadata đã cập nhật
+            updated_doc = Document(
+                page_content=chunk.page_content, metadata=new_metadata)
+            updated_chunks.append(updated_doc)
+
+        await pinecone_service.upsert_chunks(updated_chunks)
 
         return {
-            "response": chunks,
+            "response": updated_chunks,
         }
 
     except Exception as e:

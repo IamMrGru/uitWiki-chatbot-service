@@ -1,4 +1,5 @@
 import os
+import tempfile
 import re
 from langchain.text_splitter import MarkdownHeaderTextSplitter
 from langchain_core.documents import Document
@@ -8,7 +9,11 @@ from app.services.s3_service import S3Services
 def download_and_read_md(s3_key: str) -> str:
     s3_client = S3Services()
 
+    # Mac OS
     local_md_path = os.path.join("/tmp", os.path.basename(s3_key))
+
+    # Windows
+    # local_md_path = os.path.join(tempfile.gettempdir(), os.path.basename(s3_key))
 
     s3_client.download_file(s3_key, local_md_path)
 
