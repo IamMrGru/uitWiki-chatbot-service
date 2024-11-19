@@ -1,4 +1,4 @@
-from pydantic_settings import SettingsConfigDict, BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -20,6 +20,10 @@ class Settings(BaseSettings):
     AWS_SECRET_ACCESS_KEY: str
     AWS_REGION: str
     S3_BUCKET_NAME: str
+    VOYAGEAI_API_KEY: str
+    ANTHROPIC_API_KEY: str
+    OPENAI_API_KEY: str
+    LLAMA_CLOUD_API_KEY: str
 
 
 settings = Settings()  # type: ignore

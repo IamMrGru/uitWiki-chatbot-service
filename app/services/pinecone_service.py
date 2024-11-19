@@ -1,6 +1,7 @@
-from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
+
 from app.core.config import settings
 
 
@@ -17,6 +18,9 @@ class PineconeService:
             index_name=self.index_name,
             embedding=self.embeddings,
         )
+
+    async def upsert_chunk(self, chunk_with_metadata):
+        await self.vectorstore.aadd_documents([chunk_with_metadata])
 
     async def upsert_chunks(self, chunks_with_metadata):
         await self.vectorstore.aadd_documents(chunks_with_metadata)

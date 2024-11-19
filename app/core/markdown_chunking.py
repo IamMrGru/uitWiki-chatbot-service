@@ -1,9 +1,15 @@
 import os
-import tempfile
 import re
+import tempfile
+
 from langchain.text_splitter import MarkdownHeaderTextSplitter
 from langchain_core.documents import Document
+
+from app.core.create_contextual_chunk import create_contextual_chunk
+from app.services.pinecone_service import PineconeService
 from app.services.s3_service import S3Services
+
+pinecone_service = PineconeService()
 
 
 def download_and_read_md(s3_key: str) -> str:
@@ -99,7 +105,7 @@ def preprocess_tables_to_header(content, header_prefix="Table Section"):
     return "\n".join(new_content)
 
 
-def markdown_chunking(s3_key: str, metadata) -> list[Document]:
+async def markdown_chunking(s3_key: str, metadata) -> list[Document]:
     markdown_text = download_and_read_md(s3_key)
     processed_order_list = preprocess_ordered_list_to_header(markdown_text)
     processed_content = preprocess_tables_to_header(processed_order_list)
@@ -125,7 +131,12 @@ def markdown_chunking(s3_key: str, metadata) -> list[Document]:
 
     chunks = splitter.split_text(processed_content)
 
-    for chunk in chunks:
+    for index, chunk in enumerate(chunks):
         chunk.metadata = metadata_processed
+        chunk.page_content = create_contextual_chunk(
+            processed_content, chunk.page_content
+        )
+        await pinecone_service.upsert_chunk(chunk)
+        print(f'Successfully upserted chunk {index + 1} of {len(chunks)}')
 
     return chunks

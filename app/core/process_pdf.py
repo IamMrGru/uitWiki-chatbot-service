@@ -1,10 +1,17 @@
-import tempfile
-import subprocess
 import os
 import shutil
+import tempfile
+
 from fastapi import HTTPException
+from llama_parse import LlamaParse, ResultType
+
 from app.core.config import settings
 from app.services.s3_service import S3Services
+
+parser = LlamaParse(
+    result_type=ResultType.MD,
+    api_key=settings.LLAMA_CLOUD_API_KEY,
+)
 
 
 async def process_pdf(s3_key: str):
@@ -29,21 +36,20 @@ async def process_pdf(s3_key: str):
 
     try:
         with tempfile.TemporaryDirectory() as temp_dir:
-            pdf_file_path = os.path.join(temp_dir, basename)
+            pdf_file_path = os.path.join(temp_dir, f"{basename}.pdf")
             s3_client.download_file(s3_key, pdf_file_path)
 
-            output_directory = os.path.join("app", "static", "output")
-            os.makedirs(output_directory, exist_ok=True)
+            documents = await parser.aload_data(pdf_file_path)
 
-            command = f"marker_single {pdf_file_path} {output_directory}"
+            if not documents:
+                raise ValueError("No content extracted from the PDF.")
 
-            result = subprocess.run(command, shell=True,
-                                    text=True, capture_output=True)
+            join_documents = " ".join([doc.text for doc in documents])
 
-            if result.returncode != 0:
-                raise Exception(f"Error in PDF conversion: {result.stderr}")
+            with open(markdown_file_path, "w", encoding="utf-8") as f:
+                f.write(join_documents)
 
-        s3_md_key = f"markdown/{markdown_file_name}"
+        s3_md_key = f"markdown_llama/{markdown_file_name}"
         s3_client.upload_file(markdown_file_path, s3_md_key)
 
         return s3_md_key
