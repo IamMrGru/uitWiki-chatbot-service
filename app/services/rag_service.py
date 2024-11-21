@@ -28,7 +28,15 @@ class RAGServices:
 
         docs = docs1 + docs2
 
-        metadata_combined = "\n".join([str(doc.metadata) for doc in docs])
+        final_docs = []
+        seen_ids = set()
+        for doc in docs:
+            if doc.id not in seen_ids:
+                seen_ids.add(doc.id)
+                final_docs.append(doc)
+
+        metadata_combined = "\n".join(
+            [str(doc.metadata) for doc in final_docs])
 
         chain = llm_model.get_conversational_chain()
 
