@@ -1,16 +1,17 @@
 # LLM Model
 import google.generativeai as genai
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_google_genai import GoogleGenerativeAI
+from langchain.chains.query_constructor.schema import AttributeInfo
+from langchain.chains.question_answering import load_qa_chain
+from langchain.prompts import PromptTemplate
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAI
+from pydantic import SecretStr
+
+from app.core.config import settings
+
 # from langchain_anthropic import AnthropicLLM
 # from langchain_huggingface import HuggingFaceEndpoint
 
-from langchain.chains.question_answering import load_qa_chain
-from langchain.prompts import PromptTemplate
-from langchain.chains.query_constructor.schema import AttributeInfo
-from langchain.retrievers.self_query.base import SelfQueryRetriever
-from app.core.config import settings
-from pydantic import SecretStr
 
 api_key = SecretStr(settings.GOOGLE_API_KEY)
 
@@ -122,7 +123,6 @@ def get_conversational_chain():
     - Những câu trả lời có đường dẫn đến link URL hay đường dẫn để download, bạn hãy embed link đó vào câu trả lời của mình.
     - Hãy embed đường dẫn tải các mẫu đơn vào tên mẫu đơn đó.
        - Ví dụ như : [Đường dẫn tải mẫu đơn](https://www.uit.edu.vn)
-    - Nếu như câu hỏi của người hỏi không rõ ràng hoặc khó hiểu, bạn hãy giúp họ, gợi ý cho họ câu hỏi để bạn có thể giải quyết một cách dễ dàng (Có phải ý của bạn là....)
     """
 
     model = GoogleGenerativeAI(model="gemini-1.5-flash", temperature=0,
