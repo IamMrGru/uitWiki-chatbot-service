@@ -1,8 +1,9 @@
-from redis import Redis
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from app.services.rag_service import RAGServices
+from redis import Redis
+
 from app.core.config import settings
+from app.services.rag_service import RAGServices
 
 router = APIRouter()
 
@@ -19,20 +20,11 @@ redis = Redis(host=settings.REDIS_ENDPOINT, port=settings.REDIS_PORT, password=s
 async def read_root(body: QuestionRequest):
     try:
         user_question = body.user_question
-
-        cache = redis.get(user_question)
-
-        if cache:
-            return {
-                "response": cache
-            }
-        else:
-            rag_services = RAGServices(data=None)
-            response = rag_services.get_rag(user_question)
-            redis.set(user_question, response)
-            return {
-                "response": response
-            }
+        rag_services = RAGServices(data=None)
+        response = rag_services.get_rag(user_question)
+        return {
+            "response": response
+        }
 
     except Exception as e:
         raise HTTPException(

@@ -7,10 +7,10 @@ from app.core.config import settings
 
 class PineconeService:
     def __init__(self):
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name="dangvantuan/vietnamese-embedding")
-        # self.embeddings = GoogleGenerativeAIEmbeddings(
-        #     model="models/text-embedding-004")
+        # self.embeddings = HuggingFaceEmbeddings(
+        #     model_name="dangvantuan/vietnamese-embedding")
+        self.embeddings = GoogleGenerativeAIEmbeddings(
+            model="models/text-embedding-004")
         self.api_key = settings.PINECONE_API_KEY
         self.index_name = settings.PINECONE_INDEX_NAME
         self.vectorstore = PineconeVectorStore(

@@ -133,9 +133,9 @@ async def markdown_chunking(s3_key: str, metadata) -> list[Document]:
 
     for index, chunk in enumerate(chunks):
         chunk.metadata = metadata_processed
-        chunk.page_content = create_contextual_chunk(
-            processed_content, chunk.page_content
-        )
+        # chunk.page_content = create_contextual_chunk(
+        #     processed_content, chunk.page_content
+        # )
         await pinecone_service.upsert_chunk(chunk)
         print(f'Successfully upserted chunk {index + 1} of {len(chunks)}')
 
