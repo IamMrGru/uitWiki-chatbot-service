@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "anthropic>=0.39.0",
     "autopep8>=2.3.1",
+    "bert-score>=0.3.13",
     "boto3>=1.35.55",
     "cohere>=5.11.4",
     "faiss-cpu>=1.8.0.post1",
@@ -29,6 +30,7 @@ dependencies = [
     "pypdf2>=3.0.1",
     "pytest>=8.3.3",
     "redis>=5.1.1",
+    "rouge>=1.0.1",
     "voyageai>=0.3.1",
 ]
 

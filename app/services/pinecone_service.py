@@ -12,7 +12,7 @@ class PineconeService:
         self.embeddings = GoogleGenerativeAIEmbeddings(
             model="models/text-embedding-004")
         self.api_key = settings.PINECONE_API_KEY
-        self.index_name = settings.PINECONE_INDEX_NAME
+        self.index_name = 'nestjs'
         self.vectorstore = PineconeVectorStore(
             pinecone_api_key=self.api_key,
             index_name=self.index_name,

@@ -1,7 +1,6 @@
-from copy import deepcopy
+from typing import Dict
 
 from fastapi import APIRouter, HTTPException
-from langchain_core.documents import Document
 from pydantic import BaseModel
 
 from app.core.markdown_chunking import markdown_chunking
@@ -18,13 +17,13 @@ class Metadata(BaseModel):
 
 
 class UpsertRequest(BaseModel):
-    s3_pdf_key: str
-    metadata: list[Metadata]
+    documentKey: str
+    metadata: Dict[str, str]
 
 
 @router.post("/upsert", response_model=dict)
 async def upsert(body: UpsertRequest):
-    s3_pdf_key = body.s3_pdf_key
+    s3_pdf_key = body.documentKey
     metadata = body.metadata
 
     try:

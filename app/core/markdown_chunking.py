@@ -5,7 +5,6 @@ import tempfile
 from langchain.text_splitter import MarkdownHeaderTextSplitter
 from langchain_core.documents import Document
 
-from app.core.create_contextual_chunk import create_contextual_chunk
 from app.services.pinecone_service import PineconeService
 from app.services.s3_service import S3Services
 
@@ -121,9 +120,6 @@ async def markdown_chunking(s3_key: str, metadata) -> list[Document]:
 
     metadata_processed = {}
 
-    for meta in metadata:
-        metadata_processed[meta.name] = meta.value
-
     splitter = MarkdownHeaderTextSplitter(
         headers_to_split_on=header_to_split_on,
         strip_headers=False
@@ -132,7 +128,7 @@ async def markdown_chunking(s3_key: str, metadata) -> list[Document]:
     chunks = splitter.split_text(processed_content)
 
     for index, chunk in enumerate(chunks):
-        chunk.metadata = metadata_processed
+        chunk.metadata = metadata
         # chunk.page_content = create_contextual_chunk(
         #     processed_content, chunk.page_content
         # )

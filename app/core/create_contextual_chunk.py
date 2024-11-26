@@ -13,8 +13,8 @@ llm = ChatOpenAI(
     api_key=SecretStr(settings.OPENAI_API_KEY)
 )
 
-with open('app/static/output/kenhthongtingiuanhatruongvasinhvien/kenhthongtingiuanhatruongvasinhvien.md', 'r', encoding='utf-8') as f:
-    markdown_text = f.read()
+# with open('app/static/output/kenhthongtingiuanhatruongvasinhvien/kenhthongtingiuanhatruongvasinhvien.md', 'r', encoding='utf-8') as f:
+#     markdown_text = f.read()
 
 
 def create_contextual_chunk(document: str, chunk: str) -> str:
