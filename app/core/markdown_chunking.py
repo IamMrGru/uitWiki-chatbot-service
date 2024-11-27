@@ -129,7 +129,7 @@ async def markdown_chunking(s3_key: str, metadata) -> list[Document]:
         strip_headers=False
     )
 
-    chunks = splitter.split_text(processed_content)
+    chunks = splitter.split_text(processed_order_list)
 
     for index, chunk in enumerate(chunks):
         chunk.metadata = metadata_processed

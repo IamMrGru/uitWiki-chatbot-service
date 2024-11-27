@@ -49,7 +49,7 @@ async def process_pdf(s3_key: str):
             with open(markdown_file_path, "w", encoding="utf-8") as f:
                 f.write(join_documents)
 
-        s3_md_key = f"markdown_llama/{markdown_file_name}"
+        s3_md_key = f"markdown_llama/all_test_data/{markdown_file_name}"
         s3_client.upload_file(markdown_file_path, s3_md_key)
 
         return s3_md_key

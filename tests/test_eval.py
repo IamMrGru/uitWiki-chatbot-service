@@ -1,6 +1,7 @@
 import csv
 import json
 
+import evaluate
 import pandas as pd
 import pytest
 from bert_score import score
@@ -39,9 +40,11 @@ results_df = {
     'Tham chiếu': [],
     'BLEU': [],
     'ROUGE-L': [],
+    'METEOR': [],
     'BERTScore': []
 }
-metrics_summary = {'BLEU_avg': 0, 'ROUGE_avg': 0, 'BERTScore_avg': 0}
+metrics_summary = {'BLEU_avg': 0, 'ROUGE_avg': 0,
+                   'BERTScore_avg': 0, 'METEOR': 0}
 
 # Initialize Rouge scorer
 rouge = Rouge()
@@ -73,6 +76,12 @@ def test_question_response(idx):
     rouge_scores = rouge.get_scores(generated_answer, reference, avg=True)
     rouge_l_score = rouge_scores["rouge-l"]["f"]
 
+    # Calculate METEOR
+    meteor = evaluate.load('meteor')
+    meteor_result = meteor.compute(
+        predictions=[generated_answer], references=[reference])
+    meteor_result = meteor_result['meteor']
+
     # Calculate BERTScore
     # Change "en" to your language if needed
     bert_p, bert_r, bert_f1 = score(
@@ -85,6 +94,7 @@ def test_question_response(idx):
     results_df['Tham chiếu'].append(reference)
     results_df['BLEU'].append(bleu_score)
     results_df['ROUGE-L'].append(rouge_l_score)
+    results_df['METEOR'].append(meteor_result)
     results_df['BERTScore'].append(bert_f1_avg)
 
     # Assert conditions
@@ -104,6 +114,8 @@ def pytest_sessionfinish(request):
             results_df['BLEU']) / len(results_df['BLEU'])
         metrics_summary['ROUGE_avg'] = sum(
             results_df['ROUGE-L']) / len(results_df['ROUGE-L'])
+        metrics_summary['METEOR'] = sum(
+            results_df['METEOR']) / len(results_df['METEOR'])
         metrics_summary['BERTScore_avg'] = sum(
             results_df['BERTScore']) / len(results_df['BERTScore'])
 

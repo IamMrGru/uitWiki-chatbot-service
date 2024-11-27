@@ -13,11 +13,13 @@ class PineconeService:
             model="models/text-embedding-004")
         self.api_key = settings.PINECONE_API_KEY
         self.index_name = settings.PINECONE_INDEX_NAME
+        self.namespace = settings.PINECONE_NAMESPACE
         self.vectorstore = PineconeVectorStore(
             pinecone_api_key=self.api_key,
             index_name=self.index_name,
             embedding=self.embeddings,
-        )
+            namespace=self.namespace
+        )  # namespace là recursive_chunk2, #index_name là evaluation
 
     async def upsert_chunk(self, chunk_with_metadata):
         await self.vectorstore.aadd_documents([chunk_with_metadata])
