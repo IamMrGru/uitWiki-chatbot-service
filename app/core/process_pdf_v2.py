@@ -109,9 +109,9 @@ def process_document(document_url):
 
             system_prompt = (
                 "Người dùng sẽ cung cấp cho bạn một hình ảnh của tệp tài liệu. Thực hiện các hành động sau: "
-                "1. Chép lại văn bản trên trang. **BẢN CHÉP LẠI VĂN BẢN:** "
+                "1. Chép lại văn bản trên trang thành một cấu trúc đẹp dưới dạng Markdown. **BẢN CHÉP LẠI VĂN BẢN:** "
                 "2. Nếu có biểu đồ, mô tả hình ảnh và bao gồm văn bản **MÔ TẢ HÌNH ẢNH HOẶC BIỂU ĐỒ:** "
-                "3. Nếu có bảng, chép lại bảng và bao gồm văn bản **BẢN CHÉP LẠI BẢNG:**"
+                "3. Nếu có bảng, chép lại bảng và bao gồm văn bản trên trang thành một cấu trúc đẹp dưới dạng Markdown **BẢN CHÉP LẠI BẢNG:**"
             )
 
             vision_response = get_vision_response(system_prompt, image_path)
@@ -145,11 +145,10 @@ def get_embedding(text_input):
 pinecone_service = PineconeService()
 
 
-async def upsert_vector(identifier, embedding, metadata):
+async def upsert_vector(identifier, metadata):
     try:
         await pinecone_service.upsert_chunk({
             'id': identifier,
-            'values': embedding,
             'metadata': metadata,
             'text': metadata['text']
         })

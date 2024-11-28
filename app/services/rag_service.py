@@ -1,8 +1,9 @@
-from app.core import llm_model
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
-from app.core.config import settings
 from pydantic import SecretStr
+
+from app.core import llm_model
+from app.core.config import settings
 
 api_key = settings.PINECONE_API_KEY
 index_name = settings.PINECONE_INDEX_NAME
@@ -22,7 +23,7 @@ class RAGServices:
         new_db = PineconeVectorStore(
             index_name=index_name, embedding=embeddings, pinecone_api_key=api_key)
 
-        docs1 = new_db.similarity_search(query=user_question, k=15)
+        docs1 = new_db.similarity_search(query=user_question, k=5)
 
         docs2 = llm_model.filter_by_metadata(user_question, new_db)
 

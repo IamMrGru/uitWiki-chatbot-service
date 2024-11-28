@@ -25,7 +25,6 @@ class PineconeService:
         vectors = [
             Document(
                 id=chunk_with_metadata['id'],
-                values=chunk_with_metadata['values'],
                 metadata=chunk_with_metadata['metadata'],
                 page_content=chunk_with_metadata['text'],
             )
