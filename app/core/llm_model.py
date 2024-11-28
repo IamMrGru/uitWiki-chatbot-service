@@ -122,6 +122,7 @@ def get_conversational_chain():
     - Với những dạng câu hỏi Có/Không, đầu tiên phải phản hồi Có hoặc Không, phải trả lời lại nếu như người hỏi nói sai và phải giải thích vì sao trả lời như vậy, dựa trên trích dẫn thông tin đó lấy từ tài liệu nào 
     - Những câu trả lời có đường dẫn đến link URL hay đường dẫn để download, bạn hãy embed link đó vào câu trả lời của mình.
     - Hãy embed đường dẫn tải các mẫu đơn vào tên mẫu đơn đó.
+    - Hãy loại bỏ câu trích từ *CONTEXT nền tảng* và *METADATA* trong câu trả lời của bạn. Thay vì đó hãy trích từ phần nội dung trong *METADATA* [url](đường dẫn).
        - Ví dụ như : [Đường dẫn tải mẫu đơn](https://www.uit.edu.vn)
     """
 
