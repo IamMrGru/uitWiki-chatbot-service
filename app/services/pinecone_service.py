@@ -1,14 +1,13 @@
 from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
-from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
 
 from app.core.config import settings
+from app.core.huggingface import huggingface_embedding_model
 
 
 class PineconeService:
     def __init__(self):
-        # self.embeddings = HuggingFaceEmbeddings(
-        #     model_name="dangvantuan/vietnamese-embedding")
+        # self.embeddings = huggingface_embedding_model() # vinai/phobert-base, dangvantuan/vietnamese-embedding,
         self.embeddings = GoogleGenerativeAIEmbeddings(
             model="models/text-embedding-004")
         self.api_key = settings.PINECONE_API_KEY
