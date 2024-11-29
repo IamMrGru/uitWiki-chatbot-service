@@ -24,11 +24,14 @@ class RAGServices:
             # namespace là recursive_chunk2, index_name là evaluation
             index_name=index_name, embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
 
-        docs1 = new_db.similarity_search(query=user_question, k=15)
+        docs1 = new_db.similarity_search(query=user_question, k=5)
 
         docs2 = llm_model.filter_by_metadata(user_question, new_db)
 
-        docs = docs1 + docs2
+        docs = docs1  # + docs2
+
+        # Trích xuất tất cả page_content từ docs
+        all_page_content = [doc.page_content for doc in docs]
 
         metadata_combined = "\n".join([str(doc.metadata) for doc in docs])
 
@@ -39,4 +42,4 @@ class RAGServices:
                           "question": user_question},
                          return_only_outputs=True)
 
-        return response["output_text"]
+        return response["output_text"], all_page_content
