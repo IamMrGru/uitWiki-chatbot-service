@@ -123,6 +123,7 @@ def get_conversational_chain():
     - Những câu trả lời có đường dẫn đến link URL hay đường dẫn để download, bạn hãy embed link đó vào câu trả lời của mình.
     - Hãy embed đường dẫn tải các mẫu đơn vào tên mẫu đơn đó.
        - Ví dụ như : [Đường dẫn tải mẫu đơn](https://www.uit.edu.vn)
+    - Nếu không trả lời được thì hãy nói một lời xin lỗi và cho biết phạm vi câu hỏi mà bạn có thể trả lời.Bạn không được tự gợi ý câu hỏi.
     """
 
     model = GoogleGenerativeAI(model="gemini-1.5-flash", temperature=0,
