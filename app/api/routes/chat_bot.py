@@ -21,9 +21,12 @@ async def read_root(body: QuestionRequest):
     try:
         user_question = body.user_question
         rag_services = RAGServices(data=None)
-        response = rag_services.get_rag(user_question)
+        response, retrieved_contexts, num_contexts = rag_services.get_rag(
+            user_question)
         return {
-            "response": response
+            "response": response,
+            "num_contexts": num_contexts,
+            "retrieved_contexts": retrieved_contexts
         }
 
     except Exception as e:

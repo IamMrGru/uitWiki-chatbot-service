@@ -7,7 +7,7 @@ from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 def rerank_docs(user_question, retriever, top=10):
     # Rerank top 10 documents in the 15 retrieved documents
     model = HuggingFaceCrossEncoder(
-        model_name="BAAI/bge-reranker-v2-m3", model_kwargs={"device": "cpu"})
+        model_name="itdainb/PhoRanker", model_kwargs={"device": "cpu"})
     compressor = CrossEncoderReranker(model=model, top_n=top)
     compression_retriever = ContextualCompressionRetriever(
         base_compressor=compressor, base_retriever=retriever

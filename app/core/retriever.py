@@ -103,11 +103,12 @@ def hybrid_retriever(retriever1, retriever2):
     return ensemble_retriever
 
 
-def rerank(retriever, top_k=5):
-    compressor = VoyageAIRerank(
-        model="rerank-lite-1", voyageai_api_key=api_key2, top_k=top_k
-    )
-    compression_retriever = ContextualCompressionRetriever(
-        base_compressor=compressor, base_retriever=retriever
-    )
-    return compression_retriever
+# def rerank(retriever, top_k=5): # API key is not working
+#     print(api_key2)
+#     compressor = VoyageAIRerank(
+#         model="rerank-lite-1", voyageai_api_key='', top_k=top_k
+#     )
+#     compression_retriever = ContextualCompressionRetriever(
+#         base_compressor=compressor, base_retriever=retriever
+#     )
+#     return compression_retriever

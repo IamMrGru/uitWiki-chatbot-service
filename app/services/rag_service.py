@@ -36,12 +36,14 @@ class RAGServices:
         retriever4 = bm25_retriever(new_db, user_question, 20)  # BM25 Retrieve
 
         # Get docs from retriever
-        docs1 = retriever4.invoke(user_question)
+        # docs4 = retriever4.invoke(user_question)
 
-        # Rerank top 10 documents in the 15 retrieved documents
-        # reranked_docs = rerank_docs(user_question, retriever)
+        # Rerank top 10 documents in the retriever
+        reranked_docs = rerank_docs(user_question, retriever4, 10)
 
-        docs = docs1
+        # Retrieved Contexts
+        docs = reranked_docs
+        num_docs = len(docs)
 
         metadata_combined = "\n".join([str(doc.metadata) for doc in docs])
 
@@ -52,4 +54,4 @@ class RAGServices:
                           "question": user_question},
                          return_only_outputs=True)
 
-        return response["output_text"]
+        return response["output_text"], docs, num_docs
