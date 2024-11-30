@@ -1,26 +1,28 @@
 from langchain.chains.query_constructor.schema import AttributeInfo
 from langchain.chains.question_answering import load_qa_chain
-from langchain.retrievers import EnsembleRetriever
+from langchain.retrievers import (ContextualCompressionRetriever,
+                                  EnsembleRetriever)
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_community.retrievers import BM25Retriever
 from langchain_google_genai import GoogleGenerativeAI
+from langchain_voyageai import VoyageAIRerank
 from pydantic import SecretStr
 
 from app.core.config import settings
 
 api_key = SecretStr(settings.GOOGLE_API_KEY)
+api_key2 = 'pa-QEj2iv29mXFLxuGb7giLaKyPoB9LnFfLaDyG8r4Q-xU'
 
 
-def similarity_search_retriever(new_db, query, k_number=10):
+def similarity_search_retriever(new_db, k_number=10):
     retriever = new_db.as_retriever(
         search_type="similarity",
         search_kwargs={"k": k_number}
     )
-    docs = retriever.invoke(query)
-    return docs
+    return retriever
 
 
-def retrieve_by_metadata(question, new_db):
+def filter_by_metadata(new_db, k_number=10):
     metadata_field_info = [
         AttributeInfo(
             name="title",
@@ -78,17 +80,31 @@ def retrieve_by_metadata(question, new_db):
         document_content_description,
         metadata_field_info,
         verbose=True,
-        search_kwargs={'k': 50},
+        search_kwargs={'k': k_number},
         search_type='similarity',
     )
-    docs = retriever.invoke(question)
-    return docs
+    return retriever
 
 
-def get_ensemble_retrieve(retriever1, retriever2, question):
+def bm25_retriever(new_db, question, k_nums):
+    docs_list = similarity_search_retriever(new_db, question, 1000)
+    retriever = BM25Retriever.from_documents(docs_list, k=k_nums)
+    return retriever
+
+
+def get_hybrid_retriever(retriever1, retriever2):
     # initialize the ensemble retriever
     ensemble_retriever = EnsembleRetriever(
         retrievers=[retriever1, retriever2], weights=[0.5, 0.5]
     )
-    docs = ensemble_retriever.invoke(question)
-    return docs
+    return ensemble_retriever
+
+
+def rerank(retriever, top_k=5):
+    compressor = VoyageAIRerank(
+        model="rerank-lite-1", voyageai_api_key='pa-QEj2iv29mXFLxuGb7giLaKyPoB9LnFfLaDyG8r4Q-xU', top_k=top_k
+    )
+    compression_retriever = ContextualCompressionRetriever(
+        base_compressor=compressor, base_retriever=retriever
+    )
+    return compression_retriever
