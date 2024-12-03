@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     ANTHROPIC_API_KEY: str
     OPENAI_API_KEY: str
     LLAMA_CLOUD_API_KEY: str
+    COHERE_API_KEY: str
 
 
 settings = Settings()  # type: ignore

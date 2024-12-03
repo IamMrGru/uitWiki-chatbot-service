@@ -1,8 +1,8 @@
 from langchain.chains.query_constructor.schema import AttributeInfo
-from langchain.chains.question_answering import load_qa_chain
 from langchain.retrievers import (ContextualCompressionRetriever,
                                   EnsembleRetriever)
 from langchain.retrievers.self_query.base import SelfQueryRetriever
+from langchain_cohere import CohereRerank
 from langchain_community.retrievers import BM25Retriever
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_voyageai import VoyageAIRerank
@@ -11,7 +11,7 @@ from pydantic import SecretStr
 from app.core.config import settings
 
 api_key = SecretStr(settings.GOOGLE_API_KEY)
-api_key2 = SecretStr(settings.VOYAGEAI_API_KEY)
+api_key2 = SecretStr(settings.COHERE_API_KEY)
 
 
 def similarity_search_retriever(new_db, k_number=10):
@@ -88,10 +88,19 @@ def retrieve_by_metadata(new_db, k_number=10):
     return retriever
 
 
-def bm25_retriever(new_db, user_input, k_nums=10):
-    """ # Đây là hàm tạo retriever dựa trên mô hình BM25"""
-    docs_list = similarity_search_retriever(new_db, 350).invoke(user_input)
-    retriever = BM25Retriever.from_documents(docs_list, k=k_nums)
+def bm25_retriever(new_db, user_input, k_nums=50, k_nums_for_bm25=10):
+    """ # Đây là hàm tạo retriever dựa trên mô hình DenseVector+Filter Metadata rồi lọc với mô hình BM25"""
+    docs_list1 = similarity_search_retriever(new_db, k_nums).invoke(user_input)
+    docs_list2 = retrieve_by_metadata(new_db, k_nums).invoke(user_input)
+    # Cách để lọc ra các tài liệu không trùng nhau giữa 2 retriever
+    docs = docs_list1 + docs_list2
+    combined_docs = []
+    seen_ids = set()
+    for doc in docs:
+        if doc.id not in seen_ids:
+            seen_ids.add(doc.id)
+            combined_docs.append(doc)
+    retriever = BM25Retriever.from_documents(combined_docs, k=k_nums_for_bm25)
     return retriever
 
 
@@ -103,12 +112,10 @@ def hybrid_retriever(retriever1, retriever2):
     return ensemble_retriever
 
 
-# def rerank(retriever, top_k=5): # API key is not working
-#     print(api_key2)
-#     compressor = VoyageAIRerank(
-#         model="rerank-lite-1", voyageai_api_key='', top_k=top_k
-#     )
-#     compression_retriever = ContextualCompressionRetriever(
-#         base_compressor=compressor, base_retriever=retriever
-#     )
-#     return compression_retriever
+def rerank_docs(user_question, retriever, top_k=10):  # API key is not working
+    compressor = CohereRerank(cohere_api_key=api_key2,
+                              model="rerank-multilingual-v3.0", top_n=top_k)
+    compression_retriever = ContextualCompressionRetriever(
+        base_compressor=compressor, base_retriever=retriever)
+    reranked_docs = compression_retriever.invoke(user_question)
+    return reranked_docs
