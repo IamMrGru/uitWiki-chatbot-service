@@ -31,9 +31,10 @@ class RAGServices:
 
         # Retrieve from the Vector Database
         # retriever1 = similarity_search_retriever(new_db,10) # Semantic Retrieve
-        # retriever2= retrieve_by_metadata(new_db,10) # Metadata Retrieve
-        # Thay lần lượt theo cặp tham số (20,16),(30,24)  # BM25 Retrieve
-        retriever4 = bm25_retriever(new_db, user_question, 20, 16)
+
+        # Thay lần lượt theo cặp tham số (20,16),(30,24)
+        retriever4 = bm25_retriever(
+            new_db, user_question, 20, 16)  # BM25 Retrieve
 
         # Get docs from retriever
         # docs4 = retriever4.invoke(user_question)
