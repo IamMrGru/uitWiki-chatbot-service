@@ -26,7 +26,7 @@ def load_questions_from_csv(file_path):
 
 
 # Đọc dữ liệu từ file CSV chứa các câu hỏi
-questions_data = load_questions_from_csv('tests/questions252.csv')
+questions_data = load_questions_from_csv('tests/questions110.csv')
 
 API_ENDPOINT = f"{settings.API_V1_STR}/chat_bot/send_message"
 CSV_FILE_PATH = 'tests/results.csv'
