@@ -19,27 +19,27 @@ def load_questions_from_csv(file_path):
         for row in reader:
             # Lấy cả ba cột cần thiết từ file CSV
             user_input = row["user_input"]
-            reference_contexts = row["reference_contexts"]
+            # reference_contexts = row["reference_contexts"]
             reference = row["reference"]
-            questions.append((user_input, reference_contexts, reference))
+            questions.append((user_input, reference)) #, reference_contexts
     return questions
 
 
 # Đọc dữ liệu từ file CSV chứa các câu hỏi
-questions_data = load_questions_from_csv('tests/questions110.csv')
+questions_data = load_questions_from_csv('tests/questions.csv')
 
 API_ENDPOINT = f"{settings.API_V1_STR}/chat_bot/send_message"
 CSV_FILE_PATH = 'tests/results.csv'
 
 # Khởi tạo dictionary kết quả
-results_df = {'user_input': [], 'reference_contexts': [],
-              'reference': [], 'response': [], 'retrieved_contexts': []}
+results_df = {'user_input': [],
+              'reference': [], 'response': [], 'retrieved_contexts': []} # 'reference_contexts': [],
 
 # Sử dụng pytest.mark.parametrize để kiểm tra từng câu hỏi
 
 
-@pytest.mark.parametrize("user_input, reference_contexts, reference", questions_data)
-def test_question_response(user_input, reference_contexts, reference):
+@pytest.mark.parametrize("user_input, reference", questions_data) # reference_contexts
+def test_question_response(user_input, reference): # reference_contexts
     data = {"user_question": user_input}
 
     response = client.post(API_ENDPOINT, json=data)
@@ -51,7 +51,7 @@ def test_question_response(user_input, reference_contexts, reference):
 
     # Thêm câu hỏi, câu trả lời và thông tin reference vào kết quả
     results_df['user_input'].append(user_input)
-    results_df['reference_contexts'].append(reference_contexts)
+    # results_df['reference_contexts'].append(reference_contexts)
     results_df['reference'].append(reference)
     results_df['response'].append(response_data.get("response", response_data.get(
         "error", "No response")).replace('\n', ' ').replace('\r', ''))

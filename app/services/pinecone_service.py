@@ -1,15 +1,15 @@
 from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
-
+from pydantic import SecretStr
 from app.core.config import settings
 from app.core.huggingface import huggingface_embedding_model
-
+google_api_key = settings.GOOGLE_API_KEY
 
 class PineconeService:
     def __init__(self):
         # self.embeddings = huggingface_embedding_model() # vinai/phobert-base, dangvantuan/vietnamese-embedding,
         self.embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/text-embedding-004")
+            model="models/text-embedding-004",google_api_key=SecretStr(google_api_key))
         self.api_key = settings.PINECONE_API_KEY
         self.index_name = 'nestjs'
         self.vectorstore = PineconeVectorStore(

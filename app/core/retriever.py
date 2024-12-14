@@ -5,7 +5,6 @@ from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_cohere import CohereRerank
 from langchain_community.retrievers import BM25Retriever
 from langchain_google_genai import GoogleGenerativeAI
-from langchain_voyageai import VoyageAIRerank
 from pydantic import SecretStr
 
 from app.core.config import settings
@@ -113,6 +112,7 @@ def hybrid_retriever(retriever1, retriever2):
 
 
 def rerank_docs(user_question, retriever, top_k=10):  # API key is not working
+    """Hàm này sẽ sử dụng mô hình Cohere để sắp xếp lại các tài liệu đã được truy xuất"""
     compressor = CohereRerank(cohere_api_key=api_key2,
                               model="rerank-multilingual-v3.0", top_n=top_k)
     compression_retriever = ContextualCompressionRetriever(

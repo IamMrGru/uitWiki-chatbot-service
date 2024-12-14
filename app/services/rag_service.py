@@ -30,17 +30,18 @@ class RAGServices:
             index_name=index_name, embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
 
         # Retrieve from the Vector Database
-        # retriever1 = similarity_search_retriever(new_db,10) # Semantic Retrieve
+        # retriever1 = similarity_search_retriever(new_db,60) # Semantic Retrieve
 
-        # Thay lần lượt theo cặp tham số (20,16),(30,24)
+        # Thay lần lượt theo cặp tham số 
         retriever4 = bm25_retriever(
-            new_db, user_question, 20, 16)  # BM25 Retrieve
+            new_db, user_question, 200, 60)  # BM25 Retrieve
 
         # Get docs from retriever
         # docs4 = retriever4.invoke(user_question)
+        # docs1 = retriever1.invoke(user_question)
 
         # Rerank top 10 documents in the retriever
-        reranked_docs = rerank_docs(user_question, retriever4, 16)  # 16,24
+        reranked_docs = rerank_docs(user_question, retriever4, 60) 
 
         # Retrieved Contexts
         docs = reranked_docs

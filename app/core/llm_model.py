@@ -114,11 +114,7 @@ def get_conversational_chain():
     - Bạn không cần phải trả lời theo kiểu (Dựa vào METADATA được cung cấp...., dựa vào CONTEXT ta thấy,...).Tức là không cần phải tiết lộ là trả lời dựa vào thẻ Metadata
     - Đưa ra một câu trả lời tự nhiên và dễ hiểu nhất có thể.
     - Không tự trả lời mà không có trong METADATA,CONTEXT. Nếu không có bạn hãy trả lời (Mình không nắm được thông tin câu hỏi này) 
-    - Bạn hãy xem xét tùy câu hỏi mà nên tiết lộ là phần bạn trích dẫn tên tài liệu chứa thông tin hoặc nội dung đó nằm ở phần nào của tài liệu đó Ở PHẦN CUỐI CỦA CÂU TRẢ LỜI CỦA BẠN. 
-        -(Cần chỉ rõ nằm ở tài liệu nào.Embed thêm URL thì càng tốt. Nói là Trích từ [Nội dung](https://www.uit.edu.vn).)
     - Tránh trường hợp trả lời theo cụm là (sử dụng context là....)
-    - Với dạng câu hỏi liên quan đến chuẩn đầu ra, bạn hãy đối chiếu với từng context trong dấu [] để trả lời tương ứng với số năm và loại chương trình
-        - Ví dụ như bạn phải xét từng record kiểu list có trong context [2014,QĐ...,Ko có,TOEIC 900] thì ở đây '2014' là KHÓA, 'QĐ..' là CĂN CỨ QUYẾT ĐỊNH, 'Ko có' là CHUẨN QUÁ TRÌNH, 'TOEIC 900' là CHUẨN ĐẦU RA
     - Với những dạng câu hỏi Có/Không, đầu tiên phải phản hồi Có hoặc Không, phải trả lời lại nếu như người hỏi nói sai và phải giải thích vì sao trả lời như vậy, dựa trên trích dẫn thông tin đó lấy từ tài liệu nào 
     - Những câu trả lời có đường dẫn đến link URL hay đường dẫn để download, bạn hãy embed link đó vào câu trả lời của mình.
     - Hãy embed đường dẫn tải các mẫu đơn vào tên mẫu đơn đó.
@@ -128,8 +124,20 @@ def get_conversational_chain():
         - Phòng Đào tạo (Phòng A120, Trường Đại học Công nghệ Thông tin.Khu phố 6, P.Linh Trung, Tp.Thủ Đức, Tp.Hồ Chí Minh. Điện thoại: (028) 372 51993, Ext: 113(Hệ từ xa qua mạng), 112(Hệ chính quy).Email: phongdaotaodh@uit.edu.vn)
         - Phòng Công tác sinh viên (Địa chỉ: Khu phố 6, P.Linh Trung, Tp.Thủ Đức, Tp.Hồ Chí Minh.Điện thoại: (028) 37252002 Ext: 116 ,Email: ctsv@uit.edu.vn)
     - Không được gợi ý câu hỏi cho người dùng.
-
     """
+    # prompt_template = """ Hãy trả lời câu hỏi dựa trên các thông tin được cung cấp trong context và metadata.
+    # *METADATA* là: ({metadata})
+    # ---
+    # *CONTEXT nền tảng* là: ({context})
+    # ---
+    # *QUESTION của người dùng* là: ({question}?)
+    # ----------------
+    # Số lượng từ trong câu trả lời dao động 100-150 từ
+    # Với những thông tin cung cấp trên, hãy trả lời câu hỏi một cách chi tiết và chính xác nhất.
+    # Đừng tiết lộ là (Dựa theo metadata, context ta thấy,...)
+    # Bạn tuyệt đối không được tự đưa ra câu trả lời mà phải dựa vào CONTEXT và METADATA.
+    # Nếu không có thông tin context, Hãy trả lời (Mình không nắm được thông tin câu hỏi này)
+    # """
 
     model = GoogleGenerativeAI(model="gemini-1.5-flash", temperature=0,
                                api_key=api_key)
