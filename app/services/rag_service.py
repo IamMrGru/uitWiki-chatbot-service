@@ -7,7 +7,6 @@ from app.core.config import settings
 
 api_key = settings.PINECONE_API_KEY
 index_name = settings.PINECONE_INDEX_NAME
-# namespace = settings.PINECONE_NAMESPACE
 google_api_key = settings.GOOGLE_API_KEY
 
 
