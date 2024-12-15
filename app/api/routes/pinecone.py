@@ -19,6 +19,7 @@ class Metadata(BaseModel):
 
 
 class UpsertRequest(BaseModel):
+    documentId: str
     documentUrl: str
     metadata: Dict[str, str]
 
@@ -138,6 +139,7 @@ test = {
 
 @router.post("/upsert", response_model=dict)
 async def upsert(body: UpsertRequest):
+    documentId = body.documentId
     documentUrl = body.documentUrl
     metadata = body.metadata
 
@@ -152,7 +154,7 @@ async def upsert(body: UpsertRequest):
 
             new_metadata = {
                 **metadata,  # Unpack the existing metadata dictionary
-                'pageId': f"674500293b5ee682896e1df2-{pageNumber}",
+                'pageId': f"{documentId}-{pageNumber}",
                 'pageNumber': pageNumber,
                 'text': row['PageText'].replace('\n', ' ')
             }
