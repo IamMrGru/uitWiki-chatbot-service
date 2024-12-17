@@ -1,5 +1,6 @@
 # LLM Model
 import google.generativeai as genai
+from langchain.memory import ConversationBufferMemory
 from langchain.chains.query_constructor.schema import AttributeInfo
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
@@ -12,73 +13,8 @@ from app.core.config import settings
 # from langchain_anthropic import AnthropicLLM
 # from langchain_huggingface import HuggingFaceEndpoint
 
-
+memory = ConversationBufferMemory(memory_key="chat_history", input_key="question",human_prefix='Bạn đã hỏi: ',ai_prefix='UITBot đã trả lời như sau: ')
 api_key = SecretStr(settings.GOOGLE_API_KEY)
-
-
-def filter_by_metadata(question, new_db):
-    metadata_field_info = [
-        AttributeInfo(
-            name="title",
-            description="Tên của tài liệu chứa thông tin cần truy xuất",
-            type="string",
-        ),
-        AttributeInfo(
-            name="author",
-            description="Phòng ban quản lý tài liệu",
-            type="string",
-        ),
-        AttributeInfo(
-            name="publicdate",
-            description="Ngày công bố tài liệu",
-            type="string",
-        ),
-        AttributeInfo(
-            name="version",
-            description="Phiên bản của tài liệu (Quyết định số...)",
-            type="string",
-        ),
-        AttributeInfo(
-            name="description",
-            description="Sơ lược nội dung của tài liệu",
-            type="string",
-        ),
-        AttributeInfo(
-            name="category",
-            description="Loại tài liệu: Quy định, Quy chế, quy trình, hướng dẫn,...",
-            type="string",
-        ),
-        AttributeInfo(
-            name="tags",
-            description="Các từ khóa liên quan đến đoạn văn cần truy xuất",
-            type="string"
-        ),
-        AttributeInfo(
-            name="target",
-            description="Đối tượng cần sử dụng, áp dụng",
-            type="string"
-        ),
-        AttributeInfo(
-            name="url",
-            description="Đường dẫn đến tài liệu",
-            type="string"
-        ),
-    ]
-    document_content_description = "Tóm tắt nội dung của tài liệu này để phục vụ cho việc tư vấn sinh viên "
-    llm = GoogleGenerativeAI(model="gemini-1.5-flash",
-                             temperature=0, api_key=api_key)
-
-    retriever = SelfQueryRetriever.from_llm(
-        llm,
-        new_db,
-        document_content_description,
-        metadata_field_info,
-        verbose=True,
-        search_kwargs={'k': 50},
-        search_type='similarity',
-    )
-    docs = retriever.invoke(question)
-    return docs
 
 
 def get_conversational_chain():
@@ -88,7 +24,7 @@ def get_conversational_chain():
     Được phát triển bởi nhóm sinh viên UIT: Hiển Đoàn và Hải Đào dưới sự hướng dẫn của thầy Tín.
     Vai trò của bạn là:
     - Giải đáp của sinh viên tại trường Đại học Công nghệ Thông tin UIT. (LƯU Ý: Tên của trường phải luôn luôn là Trường Đại học Công nghệ Thông tin - Đại học Quốc gia Thành phố Hồ Chí Minh (UIT) . Mọi tên khác đều không chính xác)
-    - Thái độ câu trả lời của bạn phải chuyên nghiệp, lịch sự và thân thiện như là một Ambassador của trường UIT.
+    - Thái độ câu trả lời của bạn phải chuyên nghiệp, lịch sự và thân thiện như là một Ambassador của trường UIT.Luôn coi người hỏi là một người bạn.
         - Bạn có thể ghi nhận sắc thái của người hỏi để trả lời lại một cách phù hợp.
     - Nhiệm vụ của bạn là trả lời các câu hỏi và thắc mắc của sinh viên một cách chi tiết và chính xác nhất.
     - Tôi sẽ đưa cho bạn 3 thành phần: METADATA (Các thẻ thông tin đính kèm dữ liệu liên quan), CONTEXT (Nội dung của tài liệu được trích ra), QUESTION (Câu hỏi tôi cần trả lời).
@@ -96,15 +32,19 @@ def get_conversational_chain():
     - Hãy trả lời câu hỏi dựa trên các thông tin được cung cấp trong context và metadata.
     - Trong đó, context chính là nơi chứa đáp án của câu hỏi và metadata cũng có thể trả lời một số thông tin quan trọng đi kèm
     - Context là những mẫu bối cảnh rời rạc. Do đó, bạn hãy chắt lọc, ghép nối các context để trả lời câu hỏi một cách hợp lý .
-    -------------------------   
-
-    Dưới đây là thông tin tôi sẽ cung cấp cho bạn làm nền tảng  :
+    - Chat History là lịch sử trò chuyện giữa bạn và người hỏi. Bạn có thể tận dụng lịch sử trò chuyện để biết người dùng đang cần những gì.
+    
+    ---------------------------------------
+    Dưới đây là thông tin tôi sẽ cung cấp cho bạn làm nền tảng :
     *METADATA* là: ({metadata})
-    ---
+    -------
     *CONTEXT nền tảng* là: ({context})
-    ---
-    *QUESTION của người dùng* là: ({question}?)
+    -------
+    *QUESTION HIỆN TẠI của người dùng* là: ({question}?)
     -------------------------
+    *Chat History* là: 
+    ({chat_history})
+    ---------------------------------------------------
 
     Yêu cầu về câu trả lời:
     - Bạn không được tự đưa ra câu trả lời mà phải dựa vào CONTEXT
@@ -142,8 +82,17 @@ def get_conversational_chain():
     model = GoogleGenerativeAI(model="gemini-1.5-flash", temperature=0,
                                api_key=api_key)
 
+    # prompt = PromptTemplate(template=prompt_template, input_variables=[
+    #                         "context", "question", 'metadata'])
+    # chain = load_qa_chain(model, chain_type="stuff",
+    #                       prompt=prompt,memory=memory, verbose=True)
+
     prompt = PromptTemplate(template=prompt_template, input_variables=[
                             "context", "question", 'metadata'])
-    chain = load_qa_chain(model, chain_type="stuff",
-                          prompt=prompt, verbose=True)
+    chain = load_qa_chain(llm=model, chain_type="stuff",
+                          prompt=prompt,memory=memory, verbose=True)
+    
+    memory_list=len(memory.chat_memory.messages)/2
+    if memory_list>4:
+        memory.clear()
     return chain
