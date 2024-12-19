@@ -27,3 +27,6 @@ class PineconeService:
 
     async def upsert_chunks(self, chunks_with_metadata):
         await self.vectorstore.aadd_documents(chunks_with_metadata)
+
+    def upsert_faq(self, query):
+        self.vectorstore.add_texts(texts=[query])

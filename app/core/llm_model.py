@@ -49,6 +49,7 @@ def get_conversational_chain():
     Yêu cầu về câu trả lời:
     - Bạn không được tự đưa ra câu trả lời mà phải dựa vào CONTEXT
     - Hãy đảm bảo cung cấp đầy đủ chi tiết theo METADATA,CONTEXT.
+    - Bạn có thể dựa vào lịch sử trò chuyện để biết người dùng đã và đang cần những gì.
     - Cố gắng liên kết thông tin giữa METADATA,CONTEXT để tạo ra câu trả lời chính xác nhất.
     - Hãy sắp xếp câu trả lời thành một cấu trúc đẹp dưới dạng Markdown. Ở những câu trả lời về quy định, các bước thực hiện, hãy sắp xếp câu trả lời theo thứ tự
     - Bạn không cần phải trả lời theo kiểu (Dựa vào METADATA được cung cấp...., dựa vào CONTEXT ta thấy,...).Tức là không cần phải tiết lộ là trả lời dựa vào thẻ Metadata
@@ -85,10 +86,10 @@ def get_conversational_chain():
     # prompt = PromptTemplate(template=prompt_template, input_variables=[
     #                         "context", "question", 'metadata'])
     # chain = load_qa_chain(model, chain_type="stuff",
-    #                       prompt=prompt,memory=memory, verbose=True)
+    #                       prompt=prompt, verbose=True)
 
     prompt = PromptTemplate(template=prompt_template, input_variables=[
-                            "context", "question", 'metadata'])
+                            "context", "question", 'metadata','chat_history'])
     chain = load_qa_chain(llm=model, chain_type="stuff",
                           prompt=prompt,memory=memory, verbose=True)
     
