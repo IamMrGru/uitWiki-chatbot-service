@@ -1,4 +1,5 @@
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_cohere import CohereEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
 from pydantic import SecretStr
 
@@ -10,9 +11,10 @@ from app.core.retriever import (bm25_retriever, hybrid_retriever, rerank_docs,
                                 similarity_search_retriever)
 
 api_key = settings.PINECONE_API_KEY
-index_name = 'evaluation'  # settings.PINECONE_INDEX_NAME đang bị lỗi ????
-namespace = 'markdown_chunk2'  # settings.PINECONE_NAMESPACE đang bị lỗi ????
+index_name = 'cohere'  # settings.PINECONE_INDEX_NAME đang bị lỗi ????
+namespace = 'cohere-testing'  # settings.PINECONE_NAMESPACE đang bị lỗi ????
 google_api_key = settings.GOOGLE_API_KEY
+cohere_api_key = settings.COHERE_API_KEY
 
 
 class RAGServices:
@@ -23,8 +25,11 @@ class RAGServices:
 
         # embeddings = huggingface_embedding_model()
 
-        embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/text-embedding-004", google_api_key=SecretStr(google_api_key))
+        # embeddings = GoogleGenerativeAIEmbeddings(
+        #     model="models/text-embedding-004", google_api_key=SecretStr(google_api_key))
+
+        embeddings = CohereEmbeddings(
+            model="embed-multilingual-v3.0", cohere_api_key=SecretStr(cohere_api_key))
 
         new_db = PineconeVectorStore(
             index_name=index_name, embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)

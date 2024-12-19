@@ -41,15 +41,28 @@ def get_cache_key(query: str) -> str:
 
 async def get_similar_cached(query: str):
     normalized_query = normalize_query(query)
-    embedding = model.embed_query(normalized_query)
+    embedding = model.embed_query(normalized_query)  # List[float]
     embedding_bytes = struct.pack(f"{len(embedding)}f", *embedding)
 
-    for key in await redis.keys("*"):
-        cached_embedding = await redis.get(key)
-        cached_embedding = np.frombuffer(cached_embedding, dtype=np.float32)
-        similarity = 1 - cosine(embedding_bytes, cached_embedding)
-        if similarity > 0.9:
-            return await redis.get(key)
+    # Iterate over keys in Redis
+    keys = await redis.keys("*")  # No await on the list; it's already evaluated
+    for key in keys:
+        # Retrieve cached embedding as bytes
+        cached_embedding_bytes = await redis.get(key)
+        if cached_embedding_bytes:
+            # Convert cached bytes back to a NumPy array
+            cached_embedding = np.frombuffer(cached_embedding_bytes, dtype=np.float32)
+            
+            # Convert the query embedding bytes back to a NumPy array
+            embedding_array = np.frombuffer(embedding_bytes, dtype=np.float32)
+            
+            # Compute similarity
+            similarity = 1 - cosine(embedding_array, cached_embedding)
+            if similarity > 0.9:
+                # Return the cached value if similarity threshold is met
+                return await redis.get(key)
+    
+    # Return None if no similar embedding is found
     return None
 
 
@@ -57,13 +70,13 @@ async def get_similar_cached(query: str):
 async def read_root(body: QuestionRequest):
     try:
         user_question = body.user_question
-        cached_key = get_similar_cached(user_question)
+        # cached_key = await get_similar_cached(user_question)
 
-        if cached_key:
-            return {
-                "cached": True,
-                "response": cached_key
-            }
+        # if cached_key:
+        #     return {
+        #         "cached": True,
+        #         "response": cached_key
+        #     }
 
         rag_services = RAGServices(data=None)
         response, retrieved_contexts, num_contexts = rag_services.get_rag(
