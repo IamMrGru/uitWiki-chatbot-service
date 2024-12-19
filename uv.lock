@@ -1029,6 +1029,23 @@ wheels = [
 ]
 
 [[package]]
+name = "langchain-cohere"
+version = "0.3.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cohere" },
+    { name = "langchain-core" },
+    { name = "langchain-experimental" },
+    { name = "pandas" },
+    { name = "pydantic" },
+    { name = "tabulate" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b6/94/61741524effbd5593bc4fef0189f81bd37d57570c8997e98761b95959f7b/langchain_cohere-0.3.3.tar.gz", hash = "sha256:502f35eb5f983656b26114c7411628241fd06f14e24c85721ea57c9ee1c7c890", size = 36920 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bf/f0/9b93add001591503ca67e0a0c0808599eac3f554258d181e18e5b5fbf218/langchain_cohere-0.3.3-py3-none-any.whl", hash = "sha256:c8dee47a31cedb227ccf3ba93dad5f09ebadf9043e0ce941ae0bffdc3a226b37", size = 44334 },
+]
+
+[[package]]
 name = "langchain-community"
 version = "0.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1066,6 +1083,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/48/d9/9a22466b62e86628058b5e2ef6b0ccaff5f026e364f93c47b8e912654414/langchain_core-0.3.19.tar.gz", hash = "sha256:126d9e8cadb2a5b8d1793a228c0783a3b608e36064d5a2ef1a4d38d07a344523", size = 328367 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a1/25/5bd49cda589e98908e40591214c98cac52f7eb37230bbe493dbd883b9a89/langchain_core-0.3.19-py3-none-any.whl", hash = "sha256:562b7cc3c15dfaa9270cb1496990c1f3b3e0b660c4d6a3236d7f693346f2a96c", size = 409323 },
+]
+
+[[package]]
+name = "langchain-experimental"
+version = "0.3.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain-community" },
+    { name = "langchain-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8f/ad/a08e4a44d8cebb4406687764e16627813607155ee87cc6d05d3defeb0d9c/langchain_experimental-0.3.3.tar.gz", hash = "sha256:6bbcdcd084581432ef4b5d732294a59d75a858ede1714b50a5b79bcfe31fa306", size = 140300 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/56/fb/50a7181c318495c5481757d2606c22c6b30a4c50d75236898bb1a5437069/langchain_experimental-0.3.3-py3-none-any.whl", hash = "sha256:da01aafc162631475f306ca368ecae74d5becd93b8039bddb6315e755e274580", size = 208998 },
 ]
 
 [[package]]
@@ -2727,6 +2757,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "google-generativeai" },
     { name = "langchain" },
+    { name = "langchain-cohere" },
     { name = "langchain-community" },
     { name = "langchain-google-genai" },
     { name = "langchain-huggingface" },
@@ -2758,6 +2789,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0" },
     { name = "google-generativeai", specifier = "==0.7.2" },
     { name = "langchain", specifier = ">=0.3.1" },
+    { name = "langchain-cohere", specifier = ">=0.3.3" },
     { name = "langchain-community", specifier = ">=0.3.1" },
     { name = "langchain-google-genai", specifier = ">=2.0.0" },
     { name = "langchain-huggingface", specifier = ">=0.1.0" },
