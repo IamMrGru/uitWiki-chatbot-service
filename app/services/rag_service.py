@@ -1,11 +1,9 @@
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_cohere import CohereEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
 from pydantic import SecretStr
 
 from app.core import llm_model
 from app.core.config import settings
-# from app.core.huggingface import huggingface_embedding_model, rerank_docs
 from app.core.retriever import (bm25_retriever, hybrid_retriever, rerank_docs,
                                 retrieve_by_metadata,
                                 similarity_search_retriever)
@@ -29,6 +27,8 @@ class RAGServices:
         #     model="models/text-embedding-004", google_api_key=SecretStr(google_api_key))
 
         embeddings = CohereEmbeddings(
+            client="text-embedding",
+            async_client="text-embedding-async",
             model="embed-multilingual-v3.0", cohere_api_key=SecretStr(cohere_api_key))
 
         new_db = PineconeVectorStore(
@@ -37,7 +37,7 @@ class RAGServices:
         # Retrieve from the Vector Database
         # retriever1 = similarity_search_retriever(new_db,60) # Semantic Retrieve
 
-        # Thay lần lượt theo cặp tham số 
+        # Thay lần lượt theo cặp tham số
         retriever4 = bm25_retriever(
             new_db, user_question, 200, 60)  # BM25 Retrieve
 
@@ -46,7 +46,7 @@ class RAGServices:
         # docs1 = retriever1.invoke(user_question)
 
         # Rerank top 10 documents in the retriever
-        reranked_docs = rerank_docs(user_question, retriever4, 60) 
+        reranked_docs = rerank_docs(user_question, retriever4, 60)
 
         # Retrieved Contexts
         docs = reranked_docs
