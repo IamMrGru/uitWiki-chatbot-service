@@ -1,5 +1,6 @@
-from app.core.config import settings
 import boto3
+
+from app.core.config import settings
 
 
 class S3Services:
@@ -16,6 +17,7 @@ class S3Services:
         )
 
     def download_file(self, s3_key: str, file_path: str):
+        print(f"Downloading file from S3: {s3_key}")
         self.s3.download_file(self.bucket_name, s3_key, file_path)
 
     def upload_file(self,  file_path: str, s3_key: str):

@@ -1,4 +1,5 @@
 from langchain_cohere import CohereEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone.vectorstores import PineconeVectorStore
 from pydantic import SecretStr
 
@@ -9,8 +10,8 @@ from app.core.retriever import (bm25_retriever, hybrid_retriever, rerank_docs,
                                 similarity_search_retriever)
 
 api_key = settings.PINECONE_API_KEY
-index_name = 'cohere'  # settings.PINECONE_INDEX_NAME đang bị lỗi ????
-namespace = 'cohere-testing'  # settings.PINECONE_NAMESPACE đang bị lỗi ????
+index_name = 'cohere'
+namespace = 'bebetter'  # settings.PINECONE_NAMESPACE đang bị lỗi ????
 google_api_key = settings.GOOGLE_API_KEY
 cohere_api_key = settings.COHERE_API_KEY
 
@@ -35,7 +36,8 @@ class RAGServices:
             index_name=index_name, embedding=embeddings, pinecone_api_key=api_key, namespace=namespace)
 
         # Retrieve from the Vector Database
-        # retriever1 = similarity_search_retriever(new_db,60) # Semantic Retrieve
+        # retriever1 = similarity_search_retriever(
+        #     new_db, 60)  # Semantic Retrieve
 
         # Thay lần lượt theo cặp tham số
         retriever4 = bm25_retriever(
