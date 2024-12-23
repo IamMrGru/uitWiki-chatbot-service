@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
 from app.api import main as api
 from app.core.config import settings
@@ -24,11 +25,14 @@ async def lifespan(app: FastAPI):
 async def get_db():
     return mongodb.db
 
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     lifespan=lifespan
 )
+
+handler = Mangum(app)
 
 
 origins = [
