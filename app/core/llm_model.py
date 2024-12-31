@@ -94,6 +94,6 @@ def get_conversational_chain():
                           prompt=prompt,memory=memory, verbose=True)
     
     memory_list=len(memory.chat_memory.messages)/2
-    if memory_list>4:
+    if memory_list>10:
         memory.clear()
     return chain

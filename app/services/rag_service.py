@@ -11,7 +11,7 @@ from app.core.retriever import (bm25_retriever, hybrid_retriever, rerank_docs,
 
 api_key = settings.PINECONE_API_KEY
 index_name = 'cohere'
-namespace = 'bebetter'  # settings.PINECONE_NAMESPACE đang bị lỗi ????
+namespace = 'markdown_chunk2'  # settings.PINECONE_NAMESPACE đang bị lỗi ????
 google_api_key = settings.GOOGLE_API_KEY
 cohere_api_key = settings.COHERE_API_KEY
 
@@ -48,7 +48,7 @@ class RAGServices:
         # docs1 = retriever1.invoke(user_question)
 
         # Rerank top 10 documents in the retriever
-        reranked_docs = rerank_docs(user_question, retriever4, 60)
+        reranked_docs = rerank_docs(user_question, retriever4, 7)
 
         # Retrieved Contexts
         docs = reranked_docs

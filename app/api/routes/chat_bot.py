@@ -64,7 +64,7 @@ async def get_similar_cached(query: str):
 
         print(similarity)
 
-        if similarity > 0.85:
+        if similarity > 0.9:
             cached_key = f"{key.decode('utf-8')}_response"
             response = await redis.get(cached_key)
             return response
