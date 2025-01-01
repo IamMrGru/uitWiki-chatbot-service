@@ -53,6 +53,12 @@ class RAGServices:
         # Retrieved Contexts
         docs = reranked_docs
 
+        for doc in docs:
+            metadata_str = "\n".join(
+                [f"{key}: {value}" for key, value in doc.metadata.items()])
+            doc.page_content = f"{
+                doc.page_content}\n\nMetadata:\n{metadata_str}"
+
         # Get list of document content
         all_page_content = [doc.page_content for doc in docs]
 

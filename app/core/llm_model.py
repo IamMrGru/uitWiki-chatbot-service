@@ -1,8 +1,8 @@
 # LLM Model
 import google.generativeai as genai
-from langchain.memory import ConversationBufferMemory
 from langchain.chains.query_constructor.schema import AttributeInfo
 from langchain.chains.question_answering import load_qa_chain
+from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAI
@@ -13,7 +13,8 @@ from app.core.config import settings
 # from langchain_anthropic import AnthropicLLM
 # from langchain_huggingface import HuggingFaceEndpoint
 
-memory = ConversationBufferMemory(memory_key="chat_history", input_key="question",human_prefix='Bạn đã hỏi: ',ai_prefix='UITBot đã trả lời như sau: ')
+memory = ConversationBufferMemory(memory_key="chat_history", input_key="question",
+                                  human_prefix='Bạn đã hỏi: ', ai_prefix='UITBot đã trả lời như sau: ')
 api_key = SecretStr(settings.GOOGLE_API_KEY)
 
 
@@ -51,7 +52,7 @@ def get_conversational_chain():
     - Hãy đảm bảo cung cấp đầy đủ chi tiết theo METADATA,CONTEXT.
     - Bạn có thể dựa vào lịch sử trò chuyện để biết người dùng đã và đang cần những gì.
     - Cố gắng liên kết thông tin giữa METADATA,CONTEXT để tạo ra câu trả lời chính xác nhất.
-    - Hãy sắp xếp câu trả lời thành một cấu trúc đẹp dưới dạng Markdown. Ở những câu trả lời về quy định, các bước thực hiện, hãy sắp xếp câu trả lời theo thứ tự
+    - Hãy sắp xếp câu trả lời thành một cấu trúc đẹp dưới dạng Markdown. Ở những câu trả lời về quy định, các bước thực hiện, hãy sắp xếp câu trả lời theo thứ tự. Nếu câu hỏi có yêu cầu tạo bảng, thì format bảng dưới dạng html.
     - Bạn không cần phải trả lời theo kiểu (Dựa vào METADATA được cung cấp...., dựa vào CONTEXT ta thấy,...).Tức là không cần phải tiết lộ là trả lời dựa vào thẻ Metadata
     - Đưa ra một câu trả lời tự nhiên và dễ hiểu nhất có thể.
     - Không tự trả lời mà không có trong METADATA,CONTEXT. Nếu không có bạn hãy trả lời (Mình không nắm được thông tin câu hỏi này) 
@@ -89,11 +90,11 @@ def get_conversational_chain():
     #                       prompt=prompt, verbose=True)
 
     prompt = PromptTemplate(template=prompt_template, input_variables=[
-                            "context", "question", 'metadata','chat_history'])
+                            "context", "question", 'metadata', 'chat_history'])
     chain = load_qa_chain(llm=model, chain_type="stuff",
-                          prompt=prompt,memory=memory, verbose=True)
-    
-    memory_list=len(memory.chat_memory.messages)/2
-    if memory_list>10:
+                          prompt=prompt, memory=memory, verbose=True)
+
+    memory_list = len(memory.chat_memory.messages)/2
+    if memory_list > 10:
         memory.clear()
     return chain

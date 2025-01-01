@@ -92,7 +92,7 @@ async def read_root(body: QuestionRequest):
         normalized_query = normalize_query(user_question)
         embedding = model.embed_query(normalized_query)
         cache_key = get_cache_key(user_question)
-        await redis.set(cache_key, np.array(embedding, dtype=np.float32).tobytes(), ex=3600)
+        await redis.set(cache_key, np.array(embedding, dtype=np.float32).tobytes(), ex=43200)
         await redis.set(f"{cache_key}_response", response, ex=43200)
 
         return {
