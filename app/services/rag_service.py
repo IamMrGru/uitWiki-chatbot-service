@@ -48,7 +48,7 @@ class RAGServices:
         # docs1 = retriever1.invoke(user_question)
 
         # Rerank top 10 documents in the retriever
-        reranked_docs = rerank_docs(user_question, retriever4, 7)
+        reranked_docs = rerank_docs(user_question, retriever4, 50)
 
         # Retrieved Contexts
         docs = reranked_docs

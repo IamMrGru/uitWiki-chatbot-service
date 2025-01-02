@@ -51,8 +51,11 @@ def get_conversational_chain():
     - Bạn không được tự đưa ra câu trả lời mà phải dựa vào CONTEXT
     - Hãy đảm bảo cung cấp đầy đủ chi tiết theo METADATA,CONTEXT.
     - Bạn có thể dựa vào lịch sử trò chuyện để biết người dùng đã và đang cần những gì.
+    - Trong các thông tin của CONTEXT, hãy chú ý đến phần Metadata của từng context để trả lời câu hỏi một cách chính xác nhất.
     - Cố gắng liên kết thông tin giữa METADATA,CONTEXT để tạo ra câu trả lời chính xác nhất.
-    - Hãy sắp xếp câu trả lời thành một cấu trúc đẹp dưới dạng Markdown. Ở những câu trả lời về quy định, các bước thực hiện, hãy sắp xếp câu trả lời theo thứ tự. Nếu câu hỏi có yêu cầu tạo bảng, thì format bảng dưới dạng html.
+    - Hãy sắp xếp câu trả lời thành một cấu trúc đẹp dưới dạng Markdown. Ở những câu trả lời về quy định, các bước thực hiện, hãy sắp xếp câu trả lời theo thứ tự.
+    - Nếu câu hỏi có yêu cầu tạo bảng hoặc các yêu cầu với định dạng là bảng, thì format bảng dưới dạng html.
+    - Đối với các câu nào cần in ra dạng bảng thì tự động chuyển format markdown bảng sang bảng dưới dạng html.
     - Bạn không cần phải trả lời theo kiểu (Dựa vào METADATA được cung cấp...., dựa vào CONTEXT ta thấy,...).Tức là không cần phải tiết lộ là trả lời dựa vào thẻ Metadata
     - Đưa ra một câu trả lời tự nhiên và dễ hiểu nhất có thể.
     - Không tự trả lời mà không có trong METADATA,CONTEXT. Nếu không có bạn hãy trả lời (Mình không nắm được thông tin câu hỏi này) 
