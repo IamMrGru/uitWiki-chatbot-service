@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from app.api.routes import chat_bot, pinecone,query_router
 
+from app.api.routes import chat_bot, pinecone, query_router, redis
 
 api_router = APIRouter()
 
@@ -11,3 +11,5 @@ api_router.include_router(
 )
 api_router.include_router(
     query_router.router, prefix="/query_router", tags=["Query Router"])
+api_router.include_router(
+    redis.router, prefix="/redis", tags=["Redis"])

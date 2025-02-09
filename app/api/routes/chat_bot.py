@@ -1,4 +1,5 @@
 import hashlib
+import json
 
 import numpy as np
 from fastapi import APIRouter, HTTPException
@@ -41,33 +42,25 @@ async def get_similar_cached(query: str):
     normalized_query = normalize_query(query)
     embedding = model.embed_query(normalized_query)
 
-    keys = await redis.keys("*")
+    keys = await redis.keys("cache:qa:*")
 
     if not keys:
         return None
 
-    response_suffix = b'_response'
-
-    keys_without_response = [
-        key for key in keys if not key.endswith(response_suffix)]
-
-    for key in keys_without_response:
-        cached_embedding_bytes = await redis.get(key)
-
-        if cached_embedding_bytes is None:
+    for key in keys:
+        cached_data = await redis.get(key)
+        if cached_data is None:
             continue
 
-        cached_embedding = np.frombuffer(
-            cached_embedding_bytes, dtype=np.float32)
+        cached_json = json.loads(cached_data)
+        cached_embedding = np.array(cached_json['embedding'], dtype=np.float32)
 
         similarity = 1 - cosine(embedding, cached_embedding)
 
         print(similarity)
 
         if similarity > 0.9:
-            cached_key = f"{key.decode('utf-8')}_response"
-            response = await redis.get(cached_key)
-            return response
+            return cached_json['response']
 
     return None
 
@@ -89,17 +82,22 @@ async def read_root(body: QuestionRequest):
         response, retrieved_contexts, num_contexts = rag_services.get_rag(
             user_question)
 
-        normalized_query = normalize_query(user_question)
-        embedding = model.embed_query(normalized_query)
-        cache_key = get_cache_key(user_question)
-        await redis.set(cache_key, np.array(embedding, dtype=np.float32).tobytes(), ex=43200)
-        await redis.set(f"{cache_key}_response", response, ex=43200)
+        # Store all data in a single key
+        embedding = model.embed_query(normalize_query(user_question))
+        cache_data = {
+            'question': user_question,
+            'embedding': embedding if isinstance(embedding, list) else embedding.tolist(),
+            'response': response
+        }
+
+        cache_key = f"cache:qa:{get_cache_key(user_question)}"
+        await redis.set(cache_key, json.dumps(cache_data), ex=43200)
 
         return {
             "cached": False,
             "response": response,
-            "num_contexts": num_contexts,
-            "retrieved_contexts": retrieved_contexts
+            # "num_contexts": num_contexts,
+            # "retrieved_contexts": retrieved_contexts
         }
     except Exception as e:
         raise HTTPException(
