@@ -161,3 +161,28 @@ async def update_value(key: str, item: RedisItem, no_embedding: bool = False):
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/delete/{key}", response_model=dict)
+async def delete_value(key: str):
+    try:
+        if not key.startswith('cache:qa:'):
+            key = f"cache:qa:{key}"
+
+        # Get the data before deleting to include in response
+        value = await redis.get(key)
+        if value is None:
+            raise HTTPException(
+                status_code=404, detail="Cache entry not found")
+
+        cached_data = json.loads(value)
+        deleted = await redis.delete(key)
+
+        return {
+            "message": "Cache entry deleted successfully",
+            "key": key,
+            "deleted_question": cached_data.get('question'),
+            "deleted_at": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
