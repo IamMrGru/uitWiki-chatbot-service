@@ -144,9 +144,9 @@ async def update_value(key: str, item: RedisItem, no_embedding: bool = False):
             'updated_at': datetime.utcnow().isoformat()
         }
         if item.expiration:
-            await redis.set(cache_key, json.dumps(cache_data), ex=item.expiration)
+            await redis.set(key, json.dumps(cache_data), ex=item.expiration)
         else:
-            await redis.set(cache_key, json.dumps(cache_data))
+            await redis.set(key, json.dumps(cache_data))
 
         response = {
             "message": "Cache entry updated successfully",
