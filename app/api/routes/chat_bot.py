@@ -1,5 +1,6 @@
 import hashlib
 import json
+from datetime import datetime
 
 import numpy as np
 from fastapi import APIRouter, HTTPException
@@ -84,10 +85,13 @@ async def read_root(body: QuestionRequest):
 
         # Store all data in a single key
         embedding = model.embed_query(normalize_query(user_question))
+        current_time = datetime.utcnow().isoformat()
         cache_data = {
             'question': user_question,
             'embedding': embedding if isinstance(embedding, list) else embedding.tolist(),
-            'response': response
+            'response': response,
+            'created_at': current_time,
+            'updated_at': current_time
         }
 
         cache_key = f"cache:qa:{get_cache_key(user_question)}"

@@ -10,8 +10,9 @@ from app.core.retriever import (bm25_retriever, hybrid_retriever, rerank_docs,
                                 similarity_search_retriever)
 
 api_key = settings.PINECONE_API_KEY
-index_name = settings.PINECONE_INDEX_NAME
-namespace = settings.PINECONE_NAMESPACE  # settings.PINECONE_NAMESPACE đang bị lỗi ????
+index_name = 'cohere'
+# settings.PINECONE_NAMESPACE đang bị lỗi ????
+namespace = 'bestrong'
 google_api_key = settings.GOOGLE_API_KEY
 cohere_api_key = settings.COHERE_API_KEY
 
