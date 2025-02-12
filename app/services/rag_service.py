@@ -11,8 +11,7 @@ from app.core.retriever import (bm25_retriever, hybrid_retriever, rerank_docs,
 
 api_key = settings.PINECONE_API_KEY
 index_name = 'cohere'
-# settings.PINECONE_NAMESPACE đang bị lỗi ????
-namespace = 'bebetter'
+namespace = 'markdown_chunk2'
 google_api_key = settings.GOOGLE_API_KEY
 cohere_api_key = settings.COHERE_API_KEY
 
