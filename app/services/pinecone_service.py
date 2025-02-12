@@ -25,7 +25,7 @@ class PineconeService:
             pinecone_api_key=self.api_key,
             index_name=self.index_name,
             embedding=self.embeddings,
-            namespace='bestrong'
+            namespace='bebetter'
         )
 
     async def upsert_chunk(self, chunk_with_metadata):
