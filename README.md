@@ -65,3 +65,8 @@ Run the tests
 ```console
 $ uv run pytest tests/test_questions.py
 ```
+
+# Appreciation Post – A Journey of 6+ Months
+After more than 6 months of countless hours, sleepless nights, and relentless debugging, we’re beyond excited to see uitWiki-chatbot-service finally come to life!
+A huge shoutout to the core team, Đào Gia Hải & Đoàn Anh Hiển, for their insane dedication, problem-solving wizardry, and unwavering commitment to making this happen. From battling unexpected errors to optimizing retrieval pipelines, every challenge was met with determination.
+Thanks to everyone who supported us along the journey. Onward and upward! 
