@@ -1,0 +1,164 @@
+{
+    "languages": null,
+    "filetype": "pdf",
+    "pdf_toc": [],
+    "pages": 13,
+    "ocr_stats": {
+        "ocr_pages": 2,
+        "ocr_failed": 0,
+        "ocr_success": 2,
+        "ocr_engine": "surya"
+    },
+    "block_stats": {
+        "header_footer": 0,
+        "code": 0,
+        "table": 2,
+        "equations": {
+            "successful_ocr": 0,
+            "unsuccessful_ocr": 0,
+            "equations": 0
+        }
+    },
+    "computed_toc": [
+        {
+            "title": "QUY ĐỊNH",
+            "level": 2,
+            "page": 0
+        },
+        {
+            "title": "Điều 1. Phạm vi điều chỉnh và đối tượng áp dụng ",
+            "level": 4,
+            "page": 0
+        },
+        {
+            "title": "CHƯƠNG II \nTHỰC HIỆN KHÓA LUẬN TỐT NGHIỆP",
+            "level": 4,
+            "page": 1
+        },
+        {
+            "title": "Điều 3. Thời gian thực hiện KLTN ",
+            "level": 4,
+            "page": 1
+        },
+        {
+            "title": "Điều 4. Điều kiện SV được làm KLTN ",
+            "level": 4,
+            "page": 1
+        },
+        {
+            "title": "Điều 5. Đăng ký và xét duyệt đề tài KLTN ",
+            "level": 4,
+            "page": 1
+        },
+        {
+            "title": "Điều 6. Quy định về CBHD",
+            "level": 4,
+            "page": 2
+        },
+        {
+            "title": "Điều 7. Báo cáo tiến độ thực hiện KLTN ",
+            "level": 4,
+            "page": 2
+        },
+        {
+            "title": "CHƯƠNG III \nBÁO CÁO CUỐI KỲ ",
+            "level": 4,
+            "page": 3
+        },
+        {
+            "title": "Điều 8. Báo cáo KLTN cuối kỳ ",
+            "level": 4,
+            "page": 3
+        },
+        {
+            "title": "Điều 9. Phản biện KLTN ",
+            "level": 4,
+            "page": 3
+        },
+        {
+            "title": "Điều 10. Hoàn thành KLTN ",
+            "level": 4,
+            "page": 3
+        },
+        {
+            "title": "Điều 11. Thành lập hội đồng bảo vệ KLTN ",
+            "level": 2,
+            "page": 4
+        },
+        {
+            "title": "Điều 12. Tổ chức bảo vệ KLTN ",
+            "level": 2,
+            "page": 4
+        },
+        {
+            "title": "Điều 13. Đánh giá kết quả KLTN ",
+            "level": 2,
+            "page": 5
+        },
+        {
+            "title": "Điểm KLTN = (TV1+TV2+CBHD*2+CBPB*2)/6",
+            "level": 4,
+            "page": 5
+        },
+        {
+            "title": "Điều 14. Hội đồng chấm phúc tra KLTN ",
+            "level": 4,
+            "page": 5
+        },
+        {
+            "title": "Điều 16. Thù lao hướng dẫn và các hội đồng ",
+            "level": 4,
+            "page": 6
+        },
+        {
+            "title": "Điều 18. Điều khoản thi hành ",
+            "level": 4,
+            "page": 6
+        },
+        {
+            "title": "KT. HIỆU TRƯỞNG\nPHÓ HIỆU TRƯỞNG",
+            "level": 4,
+            "page": 6
+        },
+        {
+            "title": "Phụ lục \nQUY TRÌNH ",
+            "level": 2,
+            "page": 7
+        },
+        {
+            "title": "I. Mục đích ",
+            "level": 4,
+            "page": 7
+        },
+        {
+            "title": "II. Phạm vi áp dụng ",
+            "level": 4,
+            "page": 7
+        },
+        {
+            "title": "2. Gia hạn thời gian làm Khóa luận tốt nghiệp:",
+            "level": 1,
+            "page": 9
+        },
+        {
+            "title": "3. Nộp báo cáo Khóa luận tốt nghiệp\n3.1 Lưu đồ quy trình",
+            "level": 2,
+            "page": 10
+        },
+        {
+            "title": "Bước 3: CBHD kiểm tra, xác nhận",
+            "level": 2,
+            "page": 11
+        },
+        {
+            "title": "Bước 4: Khoa nhận KLTN và kiểm tra",
+            "level": 4,
+            "page": 11
+        },
+        {
+            "title": "Bước 5: Khoa nhập điểm và nộp bảng điểm giấy cho P.ĐTĐH/VPĐB",
+            "level": 4,
+            "page": 11
+        }
+    ]
+}

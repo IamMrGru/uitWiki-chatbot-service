@@ -1,0 +1,38 @@
+services:
+  chatbot-service:
+    container_name: chatbot-service
+    image: chatbot-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app/app
+    restart: unless-stopped
+    depends_on:
+      - redis
+    networks:
+      - uit-wiki-network
+
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - uit-wiki-network
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  uit-wiki-network:
+    driver: bridge
