@@ -37,7 +37,7 @@ def retrieve_by_metadata(new_db, k_number=10):
         ),
         AttributeInfo(
             name="publicdate",
-            description="Ngày công bố tài liệu",
+            description="Ngày công bố tài liệu, format YYYY hoặc YYYY-MM-DD",
             type="string",
         ),
         AttributeInfo(
@@ -83,6 +83,7 @@ def retrieve_by_metadata(new_db, k_number=10):
         verbose=True,
         search_kwargs={'k': k_number},
         search_type='similarity',
+        enable_limit=True
     )
     return retriever
 

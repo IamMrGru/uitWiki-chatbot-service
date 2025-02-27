@@ -1,67 +1,156 @@
-# uitWiki Chatbot Service by Hien and Hai 😎
+# uitWiki Chatbot Service 🤖
 
-[![Build Status](https://img.shields.io/travis/com/yourusername/projectname.svg)](https://travis-ci.com/yourusername/projectname)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://semver.org)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://semver.org) [![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/) [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-green.svg)](https://fastapi.tiangolo.com)
 
-### Project: uitWiki-Chatbot
+## Overview
 
-uitWiki-Chatbot is designed to provide students with a seamless way to interact with information about the University of Information Technology (UIT). The chatbot can answer questions related to academic matters, registration, tuition, and other university-related topics. It streamlines access to important information by allowing students to query data in natural language and get accurate responses.
+uitWiki-Chatbot is an intelligent assistant designed to help University of Information Technology (UIT) students access university-related information efficiently. Using natural language processing, it provides accurate responses to queries about academic matters, registration procedures, tuition fees, and other university-related topics.
 
-**Purpose:**
-The uitWiki-Chatbot is aimed at UIT students who need quick access to university-related information. It provides a user-friendly interface for asking questions, and it stores and retrieves conversation history for reference. It also supports an admin portal where lecturers can manage and upload PDF documents to update the system’s knowledge base.
+### Key Features
 
-This project is ideal for:
+- 🔍 Natural language query processing
+- 📚 Comprehensive university information database
+- 💾 Conversation history tracking
+- 📄 PDF document management for knowledge base
+- 🔄 Real-time response generation
+- 🌐 Multi-language support (Vietnamese/English)
 
-- UIT students seeking quick answers about the university.
-- Administrators or lecturers who need to maintain and update relevant documents for student queries.
+## Technology Stack
 
-## How to run the project
+- **Backend**: FastAPI, Python 3.12
+- **Database**: MongoDB, Redis
+- **AI/ML**: LangChain, Google Generative AI
+- **Vector Store**: Pinecone
+- **Container**: Docker
+- **Package Manager**: UV
 
-Install uv ad https://docs.astral.sh/uv/getting-started/installation/
+## Prerequisites
 
-Install the dependencies
+- Python 3.12+
+- Docker and Docker Compose
+- UV Package Manager
+- Redis
 
-```console
-$ uv sync
+## Installation
+
+1. **Install UV**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Install the pre-commit hooks
-
-```console
-$ uv run pre-commit install
+2. **Clone the Repository**
+```bash
+git clone https://github.com/yourusername/uitWiki-chatbot-service.git
+cd uitWiki-chatbot-service
 ```
 
-Create .env file and fill in the necessary information
-
-```console
-$ touch .env
+3. **Install Dependencies**
+```bash
+uv sync
 ```
 
-Run the project with docker
-
-```console
-$ docker compose up
+4. **Setup Pre-commit Hooks**
+```bash
+uv run pre-commit install
 ```
 
-Run the project with uvicorn
-
-1. Start the redis server
-
-```console
-$ docker run -d -p 6379:6379 redis
+5. **Configure Environment**
+```bash
+cp .env.example .env
+# Edit .env with your configuration
 ```
 
-2. Run the project
+## Running the Application
+### Using Docker (Recommended)
+```bash
+docker compose up
+```
 
-```console
-$ uv run fastapi dev
+### Using Local Development Server
+1. **Start Redis Server**
+```bash
+docker run -d -p 6379:6379 redis
+```
+
+2. **Start the FastAPI Server**
+```bash
+uv run fastapi dev
 ```
 
 ## Testing
-
-Run the tests
-
-```console
-$ uv run pytest tests/test_questions.py
+```bash
+uv run pytest tests/test_questions.py
 ```
+
+## API Documentation
+Once running, access the API documentation at:
+- Swagger UI: http://localhost:8000/docs
+
+## Project Structure
+```bash
+uitWiki-chatbot-service/
+├── app/
+│   ├── api/         # API routes
+│   ├── core/        # Core functionality
+│   ├── services/    # Business logic
+│   └── static/      # Static files
+├── tests/           # Test suite
+└── docker/          # Docker configuration
+```
+
+## Contributing
+- Fork the repository
+- Create your feature branch (`git checkout -b feature/amazing-feature`)
+- Commit your changes (`git commit -m 'Add some amazing feature'`)
+- Push to the branch (`git push origin feature/amazing-feature`)
+- Open a Pull Request
+
+## Core Team
+- Đoàn Anh Hiển - Lead Developer
+- Đào Gia Hải - Developer
+
+## Guide
+Feel free to insert your documents into the knowledge base. Here are some recommended document types:
+
+### Academic Documents
+- 📚 Course syllabi and learning outcomes
+- 📝 Exam regulations and procedures
+- 🎓 Graduation requirements
+- 📅 Academic calendar and important dates
+- 🔬 Laboratory safety guidelines
+
+### Administrative Documents
+- 📋 Student registration procedures
+- 💰 Tuition and fee schedules
+- 🏢 Department contact information
+- 🎯 Program-specific requirements
+- 📑 Forms and templates
+
+### Student Life Documents
+- 🏫 Campus facilities guide
+- 🎭 Club and organization guidelines
+- 🏆 Scholarship information
+- 🌟 Internship opportunities
+- 🎪 Event planning procedures
+
+### Technical Guidelines
+- 💻 IT services documentation
+- 🔑 Account management procedures
+- 📱 Student portal guides
+- 🌐 Online learning resources
+- 🛠️ Software installation guides
+
+### Best Practices for Document Preparation
+1. Ensure documents are in PDF format
+2. Include clear titles and version numbers
+3. Add relevant metadata (author, department, date)
+4. Structure content with clear headings
+5. Update documents regularly to maintain accuracy
+
+For assistance with document uploading or formatting, please contact the development team.
+
+## Appreciation Post – A Journey of 6+ Months
+After more than 6 months of countless hours, sleepless nights, and relentless debugging, we’re beyond excited to see uitWiki-chatbot-service finally come to life! A huge shout-out to the core team, Đào Gia Hải & Đoàn Anh Hiển, for their insane dedication, problem-solving wizardry, and unwavering commitment to making this happen. From battling unexpected errors to optimizing retrieval pipelines, every challenge was met with determination. Thanks to everyone who supported us along the journey. Onward and upward!
+
+## License 
+This project is licensed under the MIT License - see the LICENSE file for details.
